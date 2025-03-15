@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package jframe;
+
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +11,8 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import static jframe.DBConnection.con;
 import java.sql.ResultSet;
-
+import javax.swing.ImageIcon;
+import java.awt.Image;
 
 /**
  *
@@ -24,89 +26,137 @@ public class SignUpPage extends javax.swing.JFrame {
     public SignUpPage() {
         initComponents();
     }
-    public void insertSignupDetails(){
+
+    public void insertSignupDetails() {
         String name = txt_UserName.getText();
         String password = txt_Pass.getText();
         String email = txt_Email.getText();
         String phone = txt_PhoneNumber.getText();
-        
+
         try {
-            Connection con =DBConnection.getConnection();
-            String sql = "insert into libarians(name, password, email, phone) values(?,?,?,?)";
+            Connection con = DBConnection.getConnection();
+            String sql = "insert into librarians(name, password, email, phone) values(?,?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
-            
+
             pst.setString(1, name);
             pst.setString(2, password);
             pst.setString(3, email);
             pst.setString(4, phone);
-            
+
             int updatedRowCount = pst.executeUpdate();
-            /*
+
             if (updatedRowCount > 0) {
                 JOptionPane.showMessageDialog(this, "Recorded Inserted Successfully");
                 LoginPage page = new LoginPage();
                 page.setVisible(true);
                 dispose();
-                        
-            }else{
+
+            } else {
                 JOptionPane.showMessageDialog(this, "Recorded Insertion Failure");
             }
-            */
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        }
-    
-        public boolean validateSignup(){
-            String name = txt_UserName.getText();
-            String password = txt_Pass.getText();
-            String email = txt_Email.getText();
-            String phone = txt_PhoneNumber.getText();
-        
-            if (name.equals("")) {
-                JOptionPane.showMessageDialog(this, "please enter username");
-                return false;
-            }
-        
-            if (password.equals("")) {
-                JOptionPane.showMessageDialog(this, "please enter password");
-            return false;
-            }
-        
-            if (email.equals("") || !email.matches("^.+@.+\\..+$")) {
-                JOptionPane.showMessageDialog(this, "please enter valid email");
-                return false;
-            }
-        
-            if (phone.equals("")) {
-                JOptionPane.showMessageDialog(this, "please enter contact number");
-            return false;
-            }
-        
-            return true;
-        }
-        
-        
-         //check duplicate users
-    public boolean checkDuplicateUser(){
+
+    }
+
+    public boolean validateSignup() {
         String name = txt_UserName.getText();
-        boolean isExist = false;
-        
+        String password = txt_Pass.getText();
+        String email = txt_Email.getText();
+        String phone = txt_PhoneNumber.getText();
+
+        if (name.equals("")) {
+            JOptionPane.showMessageDialog(this, "please enter username");
+            return false;
+        }
+
+        if (password.equals("")) {
+            JOptionPane.showMessageDialog(this, "please enter password");
+            return false;
+        }
+
+        if (email.equals("") || !email.matches("^.+@.+\\..+$")) {
+            JOptionPane.showMessageDialog(this, "please enter valid email");
+            return false;
+        }
+
+        if (phone.equals("")) {
+            JOptionPane.showMessageDialog(this, "please enter contact number");
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean validateLogin() {
+        String name = txt_UserName.getText();
+        String pass = txt_Pass.getText();
+
+        if (name.equals("")) {
+            JOptionPane.showMessageDialog(this, "please enter username");
+            return false;
+        }
+        if (pass.equals("")) {
+            JOptionPane.showMessageDialog(this, "please enter password");
+            return false;
+        }
+
+        return true;
+    }
+
+    //verify creds
+    public void login() {
+        String name = txt_UserName.getText();
+        String pass = txt_Pass.getText();
+
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection  con = DBConnection.getConnection();
-           
-            PreparedStatement pst = con.prepareStatement("select * from libarians where name = ?");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DBConnection.getConnection();
+            PreparedStatement pst = con.prepareStatement("select * from librarians where name = ? and password = ?");
+
             pst.setString(1, name);
+            pst.setString(2, pass);
+
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "login successful");
+                HomePage home = new HomePage();
+                home.setVisible(true);
+                this.dispose();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "incorrect username or password");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    //check duplicate users
+    public boolean checkDuplicateUser() {
+        String name = txt_UserName.getText();
+        String pass = txt_Pass.getText();
+        String email = txt_Email.getText();
+        boolean isExist = false;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DBConnection.getConnection();
+
+            PreparedStatement pst = con.prepareStatement("select * from librarians where name = ? and password = ? and email = ?");
+            pst.setString(1, name);
+            pst.setString(2, pass);
+            pst.setString(3, email);            
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 isExist = true;
-            }else{
+            } else {
                 isExist = false;
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -141,17 +191,14 @@ public class SignUpPage extends javax.swing.JFrame {
         rSMaterialButtonCircle1 = new rojerusan.RSMaterialButtonCircle();
         rSMaterialButtonCircle2 = new rojerusan.RSMaterialButtonCircle();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(51, 255, 0));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel7.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 36)); // NOI18N
@@ -163,7 +210,7 @@ public class SignUpPage extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, -1, -1));
 
-        txt_UserName.setBackground(new java.awt.Color(51, 255, 0));
+        txt_UserName.setBackground(new java.awt.Color(255, 255, 255));
         txt_UserName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         txt_UserName.setForeground(new java.awt.Color(0, 0, 0));
         txt_UserName.setToolTipText("");
@@ -188,7 +235,7 @@ public class SignUpPage extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_Account_50px.png"))); // NOI18N
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user.png"))); // NOI18N
         jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 170, -1, -1));
 
         jLabel11.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
@@ -203,10 +250,10 @@ public class SignUpPage extends javax.swing.JFrame {
 
         jLabel13.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_Forgot_Password_50px_4.png"))); // NOI18N
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/padlock.png"))); // NOI18N
         jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 280, -1, -1));
 
-        txt_Pass.setBackground(new java.awt.Color(51, 255, 0));
+        txt_Pass.setBackground(new java.awt.Color(255, 255, 255));
         txt_Pass.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         txt_Pass.setForeground(new java.awt.Color(0, 0, 0));
         txt_Pass.setToolTipText("");
@@ -226,10 +273,10 @@ public class SignUpPage extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_Secured_Letter_50px.png"))); // NOI18N
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/email2.png"))); // NOI18N
         jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 400, -1, -1));
 
-        txt_Email.setBackground(new java.awt.Color(51, 255, 0));
+        txt_Email.setBackground(new java.awt.Color(255, 255, 255));
         txt_Email.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         txt_Email.setForeground(new java.awt.Color(0, 0, 0));
         txt_Email.setToolTipText("");
@@ -249,10 +296,10 @@ public class SignUpPage extends javax.swing.JFrame {
 
         jLabel17.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_Google_Mobile_50px.png"))); // NOI18N
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/phone-call.png"))); // NOI18N
         jPanel2.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 510, -1, -1));
 
-        txt_PhoneNumber.setBackground(new java.awt.Color(51, 255, 0));
+        txt_PhoneNumber.setBackground(new java.awt.Color(255, 255, 255));
         txt_PhoneNumber.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         txt_PhoneNumber.setForeground(new java.awt.Color(0, 0, 0));
         txt_PhoneNumber.setToolTipText("");
@@ -285,40 +332,20 @@ public class SignUpPage extends javax.swing.JFrame {
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 750));
 
-        jPanel1.setBackground(new java.awt.Color(255, 51, 255));
+        jPanel1.setBackground(new java.awt.Color(51, 255, 0));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("DEVELOPER");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("WELLCOME TO LIBARY MANAGEMENT APPLICATION!");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, -1, -1));
 
-        jLabel3.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("UNIQUE");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
-
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/woman-librarian-concept-free-vector-removebg-preview.png"))); // NOI18N
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, 620, 590));
 
-        jLabel5.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("x");
-        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel5MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 0, -1, -1));
-
         jLabel6.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 36)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Hi! Libarians!");
+        jLabel6.setText("Hi! Librarians!");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 90, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 0, 750, 750));
@@ -343,30 +370,27 @@ public class SignUpPage extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_PhoneNumberActionPerformed
 
     private void rSMaterialButtonCircle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle1ActionPerformed
-        // TODO add your handling code here:
+         if (validateLogin()) {
+           login();
+        }
     }//GEN-LAST:event_rSMaterialButtonCircle1ActionPerformed
 
     private void rSMaterialButtonCircle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle2ActionPerformed
-         if (validateSignup() == true) {
+        if (validateSignup() == true) {
             if (checkDuplicateUser() == false) {
-                 insertSignupDetails();
-            }else{
-               JOptionPane.showMessageDialog(this, "username already exist"); 
+                insertSignupDetails();
+            } else {
+                JOptionPane.showMessageDialog(this, "username already exist");
             }
-                    
-           
+
         }
-  
+
     }//GEN-LAST:event_rSMaterialButtonCircle2ActionPerformed
 
-    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-         System.exit(0);
-    }//GEN-LAST:event_jLabel5MouseClicked
-
     private void txt_UserNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_UserNameFocusLost
-          if (checkDuplicateUser() == true) {                
-               JOptionPane.showMessageDialog(this, "username already exist"); 
-            }
+        if (checkDuplicateUser() == true) {
+            JOptionPane.showMessageDialog(this, "username already exist");
+        }
     }//GEN-LAST:event_txt_UserNameFocusLost
 
     /**
@@ -405,7 +429,6 @@ public class SignUpPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -415,9 +438,7 @@ public class SignUpPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

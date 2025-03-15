@@ -19,7 +19,7 @@ public class DBConnection {
     public static Connection getConnection(){
         try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                String url = "jdbc:mysql://localhost:3306/lms?useSSL=false&allowPublicKeyRetrieval=true";
+                String url = "jdbc:mysql://localhost:3306/LMS?useSSL=false&allowPublicKeyRetrieval=true";
                 String user = "root";
                 String password = "1234";
                 con = DriverManager.getConnection(url, user, password);
