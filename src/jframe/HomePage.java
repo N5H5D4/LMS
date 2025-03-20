@@ -88,24 +88,27 @@ public class HomePage extends javax.swing.JFrame {
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1500, 50));
 
-        jPanel3.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel4.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel13.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel13.setBorder(javax.swing.BorderFactory.createMatteBorder(4, 0, 0, 0, new java.awt.Color(255, 255, 255)));
         jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel4.setBackground(new java.awt.Color(102, 153, 255));
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24x24_home-silhouette-on-black-square-background_icon-icons.com_70471.png"))); // NOI18N
         jLabel4.setText("       HOME PAGE");
+        jLabel4.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 0, new java.awt.Color(255, 255, 255)));
         jPanel13.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 180, 50));
 
         jPanel4.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, -1));
 
-        jPanel5.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -116,7 +119,7 @@ public class HomePage extends javax.swing.JFrame {
 
         jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 51, 210, -1));
 
-        jPanel6.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -132,7 +135,7 @@ public class HomePage extends javax.swing.JFrame {
 
         jPanel4.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 96, 200, 39));
 
-        btnMR.setBackground(new java.awt.Color(102, 153, 255));
+        btnMR.setBackground(new java.awt.Color(255, 255, 255));
         btnMR.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         btnMR.setForeground(new java.awt.Color(0, 51, 51));
         btnMR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24x24 reader.png"))); // NOI18N
@@ -147,7 +150,7 @@ public class HomePage extends javax.swing.JFrame {
         });
         jPanel4.add(btnMR, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 200, 210, -1));
 
-        btnBBF.setBackground(new java.awt.Color(102, 153, 255));
+        btnBBF.setBackground(new java.awt.Color(255, 255, 255));
         btnBBF.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         btnBBF.setForeground(new java.awt.Color(0, 51, 51));
         btnBBF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24x24_form_line_icon_235623.png"))); // NOI18N
@@ -162,7 +165,7 @@ public class HomePage extends javax.swing.JFrame {
         });
         jPanel4.add(btnBBF, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 250, 210, -1));
 
-        btnBD.setBackground(new java.awt.Color(102, 153, 255));
+        btnBD.setBackground(new java.awt.Color(255, 255, 255));
         btnBD.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         btnBD.setForeground(new java.awt.Color(0, 51, 51));
         btnBD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24x24form_85828.png"))); // NOI18N
@@ -177,7 +180,7 @@ public class HomePage extends javax.swing.JFrame {
         });
         jPanel4.add(btnBD, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 300, 210, -1));
 
-        btnPF.setBackground(new java.awt.Color(102, 153, 255));
+        btnPF.setBackground(new java.awt.Color(255, 255, 255));
         btnPF.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         btnPF.setForeground(new java.awt.Color(0, 51, 51));
         btnPF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/coins-stacks-money_icon-icons.com_56191.png"))); // NOI18N
@@ -192,7 +195,7 @@ public class HomePage extends javax.swing.JFrame {
         });
         jPanel4.add(btnPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 350, 210, -1));
 
-        btnMB.setBackground(new java.awt.Color(102, 153, 255));
+        btnMB.setBackground(new java.awt.Color(255, 255, 255));
         btnMB.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         btnMB.setForeground(new java.awt.Color(0, 51, 51));
         btnMB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24x24_bookstack_libr_3024.png"))); // NOI18N
@@ -228,7 +231,7 @@ public class HomePage extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jPanel7.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 3, 700));
+        jPanel7.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 7, 3, 700));
 
         jPanel15.setBackground(new java.awt.Color(255, 255, 255));
         jPanel15.setBorder(javax.swing.BorderFactory.createMatteBorder(10, 10, 10, 10, new java.awt.Color(0, 51, 51)));
@@ -354,6 +357,7 @@ public class HomePage extends javax.swing.JFrame {
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/library2.png"))); // NOI18N
         jLabel3.setText("jLabel3");
+        jLabel3.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 0, new java.awt.Color(255, 255, 255)));
         jPanel7.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1, -1, 700));
 
         jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 1300, -1));
@@ -377,7 +381,9 @@ public class HomePage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMRActionPerformed
-        // TODO add your handling code here:
+        ManageReaders MR = new ManageReaders();
+        MR.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnMRActionPerformed
 
     private void btnBBFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBBFActionPerformed
