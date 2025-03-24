@@ -387,7 +387,9 @@ public class HomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMRActionPerformed
 
     private void btnBBFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBBFActionPerformed
-        // TODO add your handling code here:
+       BooksBorrowing BBF = new BooksBorrowing();
+        BBF.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnBBFActionPerformed
 
     private void btnBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBDActionPerformed

@@ -321,6 +321,16 @@ public class ManageBookss extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        AddBooksPanel = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblBooks1 = new javax.swing.JTable();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        btnAddRow = new rojerusan.RSButtonHover();
+        btnSave = new rojerusan.RSButtonHover();
+        jLabel21 = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
         searchAreaPanel = new javax.swing.JPanel();
         cmbCategory = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
@@ -356,14 +366,6 @@ public class ManageBookss extends javax.swing.JFrame {
         cmbCriteria = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        AddBooksPanel = new javax.swing.JPanel();
-        btnAddRow = new rojerusan.RSButtonHover();
-        btnSave = new rojerusan.RSButtonHover();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblBooks1 = new javax.swing.JTable();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -372,7 +374,7 @@ public class ManageBookss extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(0, 51, 51));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel3.setBackground(new java.awt.Color(102, 102, 0));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setForeground(new java.awt.Color(0, 0, 0));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 3, 35));
@@ -383,7 +385,7 @@ public class ManageBookss extends javax.swing.JFrame {
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/li.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/li4.png"))); // NOI18N
         jLabel1.setText("jLabel1");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 50, -1));
 
@@ -402,12 +404,13 @@ public class ManageBookss extends javax.swing.JFrame {
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1500, 50));
 
         jPanel4.setBackground(new java.awt.Color(0, 51, 51));
-        jPanel4.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 0, new java.awt.Color(255, 255, 255)));
+        jPanel4.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 3, new java.awt.Color(255, 255, 255)));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnAddBook.setBackground(new java.awt.Color(0, 51, 51));
+        btnAddBook.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
         btnAddBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24x24business_application_addthedatabase_add_insert_database_db_2313.png"))); // NOI18N
-        btnAddBook.setText("     Add Books");
+        btnAddBook.setText("Add Books");
         btnAddBook.setColorHover(new java.awt.Color(102, 153, 255));
         btnAddBook.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnAddBook.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -420,11 +423,12 @@ public class ManageBookss extends javax.swing.JFrame {
                 btnAddBookActionPerformed(evt);
             }
         });
-        jPanel4.add(btnAddBook, new org.netbeans.lib.awtextra.AbsoluteConstraints(-40, 130, 240, -1));
+        jPanel4.add(btnAddBook, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 180, -1));
 
         searchPanel.setBackground(new java.awt.Color(0, 51, 51));
+        searchPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
         searchPanel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24x24search_find_database_16703.png"))); // NOI18N
-        searchPanel.setText("    Search Books");
+        searchPanel.setText("Search Books");
         searchPanel.setColorHover(new java.awt.Color(102, 153, 255));
         searchPanel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         searchPanel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -437,16 +441,16 @@ public class ManageBookss extends javax.swing.JFrame {
                 searchPanelActionPerformed(evt);
             }
         });
-        jPanel4.add(searchPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 70, 220, -1));
+        jPanel4.add(searchPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 180, -1));
 
         jPanel5.setBackground(new java.awt.Color(102, 153, 255));
-        jPanel5.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 0, new java.awt.Color(255, 255, 255)));
+        jPanel5.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 3, new java.awt.Color(255, 255, 255)));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("FEATURES");
-        jPanel5.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, -1, -1));
+        jPanel5.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, -1, 50));
 
         jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 50));
 
@@ -454,6 +458,96 @@ public class ManageBookss extends javax.swing.JFrame {
         jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 560, -1, -1));
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 200, 700));
+
+        AddBooksPanel.setBackground(new java.awt.Color(0, 51, 51));
+        AddBooksPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 0, new java.awt.Color(255, 255, 255)));
+        AddBooksPanel.setAlignmentX(1.0F);
+        AddBooksPanel.setAlignmentY(1.0F);
+        AddBooksPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tblBooks1.setBackground(new java.awt.Color(255, 255, 255));
+        tblBooks1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        tblBooks1.setForeground(new java.awt.Color(0, 0, 0));
+        tblBooks1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ISBN", "Title", "Author", "Publisher", "Published year ", "Category", "Price", "Quantity"
+            }
+        ));
+        tblBooks1.setGridColor(new java.awt.Color(0, 51, 51));
+        tblBooks1.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        tblBooks1.setPreferredSize(new java.awt.Dimension(800, 2000));
+        tblBooks1.setRowHeight(30);
+        tblBooks1.setSelectionBackground(new java.awt.Color(255, 51, 51));
+        tblBooks1.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tblBooks1.setShowGrid(true);
+        tblBooks1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblBooks1MouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tblBooks1);
+
+        AddBooksPanel.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 1310, 460));
+
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel9.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(0, 51, 51)));
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel8.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel8.setText("ADD BOOKS");
+        jPanel9.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 30, -1, -1));
+
+        btnAddRow.setBackground(new java.awt.Color(255, 255, 255));
+        btnAddRow.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(102, 153, 255)));
+        btnAddRow.setForeground(new java.awt.Color(0, 0, 0));
+        btnAddRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24X24add-1_icon-icons.com_65127.png"))); // NOI18N
+        btnAddRow.setText("Add row");
+        btnAddRow.setColorHover(new java.awt.Color(204, 0, 0));
+        btnAddRow.setColorText(new java.awt.Color(0, 0, 0));
+        btnAddRow.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnAddRow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddRowActionPerformed(evt);
+            }
+        });
+        jPanel9.add(btnAddRow, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 140, 130, 50));
+
+        btnSave.setBackground(new java.awt.Color(255, 255, 255));
+        btnSave.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(102, 153, 255)));
+        btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24X24save_78935.png"))); // NOI18N
+        btnSave.setText("Save");
+        btnSave.setColorHover(new java.awt.Color(204, 0, 0));
+        btnSave.setColorText(new java.awt.Color(0, 0, 0));
+        btnSave.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+        jPanel9.add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 140, 130, 50));
+
+        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/digital-library.png"))); // NOI18N
+        jPanel9.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 170, 140));
+
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel10.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 0, 0, new java.awt.Color(0, 51, 51)));
+        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel9.setText("*Enter complete information per line to add book information");
+        jPanel10.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
+
+        jPanel9.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, 1110, 90));
+
+        AddBooksPanel.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 1300, 200));
+
+        getContentPane().add(AddBooksPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 50, 1300, 700));
 
         searchAreaPanel.setBackground(new java.awt.Color(255, 255, 255));
         searchAreaPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -696,86 +790,8 @@ public class ManageBookss extends javax.swing.JFrame {
 
         getContentPane().add(searchAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 50, 1300, 700));
 
-        AddBooksPanel.setBackground(new java.awt.Color(0, 204, 204));
-        AddBooksPanel.setAlignmentX(1.0F);
-        AddBooksPanel.setAlignmentY(1.0F);
-        AddBooksPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        btnAddRow.setBackground(new java.awt.Color(102, 153, 255));
-        btnAddRow.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(102, 255, 0)));
-        btnAddRow.setForeground(new java.awt.Color(0, 0, 0));
-        btnAddRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24X24add-1_icon-icons.com_65127.png"))); // NOI18N
-        btnAddRow.setText("Add row");
-        btnAddRow.setColorHover(new java.awt.Color(204, 0, 0));
-        btnAddRow.setColorText(new java.awt.Color(0, 0, 0));
-        btnAddRow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddRowActionPerformed(evt);
-            }
-        });
-        AddBooksPanel.add(btnAddRow, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 590, 130, 50));
-
-        btnSave.setBackground(new java.awt.Color(102, 153, 255));
-        btnSave.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(102, 255, 0)));
-        btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24X24save_78935.png"))); // NOI18N
-        btnSave.setText("Save");
-        btnSave.setColorHover(new java.awt.Color(204, 0, 0));
-        btnSave.setColorText(new java.awt.Color(0, 0, 0));
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
-            }
-        });
-        AddBooksPanel.add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 590, 130, 50));
-
-        tblBooks1.setBackground(new java.awt.Color(255, 255, 255));
-        tblBooks1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        tblBooks1.setForeground(new java.awt.Color(0, 0, 0));
-        tblBooks1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "ISBN", "Title", "Author", "Publisher", "Published year ", "Category", "Price", "Quantity"
-            }
-        ));
-        tblBooks1.setGridColor(new java.awt.Color(0, 51, 51));
-        tblBooks1.setIntercellSpacing(new java.awt.Dimension(1, 1));
-        tblBooks1.setPreferredSize(new java.awt.Dimension(800, 2000));
-        tblBooks1.setRowHeight(30);
-        tblBooks1.setSelectionBackground(new java.awt.Color(255, 51, 51));
-        tblBooks1.setSelectionForeground(new java.awt.Color(255, 255, 255));
-        tblBooks1.setShowGrid(true);
-        tblBooks1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblBooks1MouseClicked(evt);
-            }
-        });
-        jScrollPane3.setViewportView(tblBooks1);
-
-        AddBooksPanel.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 1310, 440));
-
-        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel9.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(0, 51, 51)));
-        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel8.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel8.setText("ADD BOOKS");
-        jPanel9.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, -1, -1));
-
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel9.setText("*Enter complete information per line to add book information");
-        jPanel9.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, -1, -1));
-
-        AddBooksPanel.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 660, 100));
-
         jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/book-wall-1151405_1920.jpg"))); // NOI18N
-        AddBooksPanel.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 700));
-
-        getContentPane().add(AddBooksPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 50, 1300, 700));
+        getContentPane().add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 50, 1300, 700));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1008,6 +1024,7 @@ public class ManageBookss extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1016,6 +1033,7 @@ public class ManageBookss extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
