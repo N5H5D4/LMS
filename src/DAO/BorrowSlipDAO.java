@@ -102,4 +102,131 @@ public class BorrowSlipDAO {
             e.printStackTrace();
         }
     }
+
+    public Integer getBorrowId(int readerId, String borrowDate) {
+        Integer borrowId = null;
+        String query = "SELECT id FROM borrow_slips WHERE reader_id = ? AND borrow_date = ?";
+
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setInt(1, readerId);
+            pst.setString(2, borrowDate);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                borrowId = rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return borrowId;
+    }
+
+    public boolean deleteBorrowRecord(int borrowId, String isbn) {
+        boolean isDeleted = false;
+        String deleteDetailQuery = "DELETE FROM borrow_details WHERE borrow_id = ? AND isbn = ?";
+        String deleteSlipQuery = "DELETE FROM borrow_slips WHERE id = ?";
+
+        try (Connection con = DBConnection.getConnection()) {
+            con.setAutoCommit(false); // Bắt đầu transaction
+
+            // Xóa chi tiết mượn trước
+            try (PreparedStatement pstDetail = con.prepareStatement(deleteDetailQuery)) {
+                pstDetail.setInt(1, borrowId);
+                pstDetail.setString(2, isbn);
+                int detailRows = pstDetail.executeUpdate();
+
+                if (detailRows > 0) {
+                    // Kiểm tra xem phiếu mượn còn sách nào không
+                    try (PreparedStatement checkStmt = con.prepareStatement(
+                            "SELECT COUNT(*) FROM borrow_details WHERE borrow_id = ?")) {
+                        checkStmt.setInt(1, borrowId);
+                        ResultSet rs = checkStmt.executeQuery();
+                        if (rs.next() && rs.getInt(1) == 0) {
+                            try (PreparedStatement pstSlip = con.prepareStatement(deleteSlipQuery)) {
+                                pstSlip.setInt(1, borrowId);
+                                pstSlip.executeUpdate();
+                            }
+                        }
+                    }
+                    con.commit();
+                    isDeleted = true;
+                } else {
+                    con.rollback();
+                }
+            } catch (SQLException e) {
+                con.rollback();
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isDeleted;
+
+    }
+
+    public boolean updateBorrowRecord(int borrowId, String oldIsbn, String newIsbn, int readerId, Date dueDate, Date returnDate, String status) {
+        Connection con = DBConnection.getConnection();
+        try {
+            con.setAutoCommit(false);
+
+            // Update borrow_slips first
+            String updateSlipQuery = "UPDATE borrow_slips SET reader_id = ?, due_date = ?, return_date = ? WHERE id = ?";
+            try (PreparedStatement pst = con.prepareStatement(updateSlipQuery)) {
+                pst.setInt(1, readerId);
+                pst.setDate(2, new java.sql.Date(dueDate.getTime()));
+                pst.setDate(3, returnDate != null ? new java.sql.Date(returnDate.getTime()) : null);
+                pst.setInt(4, borrowId);
+                System.out.println("Executing: " + pst);
+                pst.executeUpdate();
+            }
+
+            // If ISBN changes, delete old and insert new in borrow_details
+            if (!oldIsbn.equals(newIsbn)) {
+                String deleteQuery = "DELETE FROM borrow_details WHERE borrow_id = ? AND isbn = ?";
+                try (PreparedStatement pst = con.prepareStatement(deleteQuery)) {
+                    pst.setInt(1, borrowId);
+                    pst.setString(2, oldIsbn);
+                    System.out.println("Executing: " + pst);
+                    pst.executeUpdate();
+                }
+
+                String insertQuery = "INSERT INTO borrow_details (borrow_id, isbn, status) VALUES (?, ?, ?)";
+                try (PreparedStatement pst = con.prepareStatement(insertQuery)) {
+                    pst.setInt(1, borrowId);
+                    pst.setString(2, newIsbn);
+                    pst.setString(3, status);
+                    System.out.println("Executing: " + pst);
+                    pst.executeUpdate();
+                }
+            } else {
+                // If ISBN doesn't change, just update status
+                String updateDetailsQuery = "UPDATE borrow_details SET status = ? WHERE borrow_id = ? AND isbn = ?";
+                try (PreparedStatement pst = con.prepareStatement(updateDetailsQuery)) {
+                    pst.setString(1, status);
+                    pst.setInt(2, borrowId);
+                    pst.setString(3, newIsbn);
+                    System.out.println("Executing: " + pst);
+                    pst.executeUpdate();
+                }
+            }
+
+            con.commit();
+            return true;
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                con.setAutoCommit(true);
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }

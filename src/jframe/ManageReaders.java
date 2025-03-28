@@ -70,7 +70,6 @@ public class ManageReaders extends javax.swing.JFrame {
     }
 
     private void searchReaders() {
-        
 
         String keyword = txtSearch.getText().trim();
         String yearFilter = cmbBirthDate.getSelectedItem().toString();
@@ -120,7 +119,7 @@ public class ManageReaders extends javax.swing.JFrame {
                 int year = Integer.parseInt(yearFilter);
                 params.add(year);
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Năm không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Invalid year!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }
@@ -166,7 +165,7 @@ public class ManageReaders extends javax.swing.JFrame {
             pst.close();
             con.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Lỗi khi tìm kiếm người đọc: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error while searching for reader: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -186,7 +185,7 @@ public class ManageReaders extends javax.swing.JFrame {
         int rowCount = tblReaders1.getRowCount();
 
         if (rowCount == 0) {
-            JOptionPane.showMessageDialog(this, "Không có thông tin nào để lưu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No information to save!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -243,30 +242,30 @@ public class ManageReaders extends javax.swing.JFrame {
                     pst.addBatch(); // Thêm vào batch
                     addedCount++;
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(this, "Lỗi định dạng số ở dòng " + (i + 1) + ": " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Number format error on line " + (i + 1) + ": " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Lỗi không xác định ở dòng " + (i + 1) + ": " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Unknown error on line " + (i + 1) + ": " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
             if (addedCount > 0) {
                 pst.executeBatch(); // Thực hiện batch insert
                 con.commit(); // Xác nhận transaction
-                JOptionPane.showMessageDialog(this, addedCount + "Đã thêm!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, addedCount + "Added!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 model.setRowCount(0); // Xóa bảng sau khi lưu thành công
                 model.addRow(new Object[]{"", "", "", "", "", "", "", ""}); // Tạo một dòng trống mới để nhập thêm
             } else {
-                con.rollback(); // Hoàn tác nếu không có sách nào được thêm
+                con.rollback();
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Lỗi khi thêm sách: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error adding book: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void enableRightClickCopy(JTable table) {
-        
-        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION); 
+
+        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem copyMenuItem = new JMenuItem("Copy");
@@ -286,7 +285,7 @@ public class ManageReaders extends javax.swing.JFrame {
                     Object value = table.getValueAt(row, col);
                     copiedText.append(value == null ? "" : value.toString()).append("\t");
                 }
-                copiedText.setLength(copiedText.length() - 1); 
+                copiedText.setLength(copiedText.length() - 1);
                 copiedText.append("\n");
             }
 
@@ -303,7 +302,7 @@ public class ManageReaders extends javax.swing.JFrame {
 
         popupMenu.add(copyMenuItem);
 
-        table.setComponentPopupMenu(popupMenu); 
+        table.setComponentPopupMenu(popupMenu);
     }
 
     /**
@@ -392,12 +391,12 @@ public class ManageReaders extends javax.swing.JFrame {
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/li4.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/li4.png"))); // NOI18N
         jLabel1.setText("jLabel1");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 50, -1));
 
         btnBack.setBackground(new java.awt.Color(255, 255, 255));
-        btnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/back_main_page_icon_124174.png"))); // NOI18N
+        btnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/back_main_page_icon_124174.png"))); // NOI18N
         btnBack.setColorHover(new java.awt.Color(204, 0, 51));
         btnBack.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnBack.addActionListener(new java.awt.event.ActionListener() {
@@ -415,7 +414,6 @@ public class ManageReaders extends javax.swing.JFrame {
 
         btnAddReader.setBackground(new java.awt.Color(0, 51, 51));
         btnAddReader.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
-        btnAddReader.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24x24business_application_addthedatabase_add_insert_database_db_2313.png"))); // NOI18N
         btnAddReader.setText("Add Readers");
         btnAddReader.setColorHover(new java.awt.Color(102, 153, 255));
         btnAddReader.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -433,7 +431,6 @@ public class ManageReaders extends javax.swing.JFrame {
 
         searchPanel.setBackground(new java.awt.Color(0, 51, 51));
         searchPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
-        searchPanel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24x24search_find_database_16703.png"))); // NOI18N
         searchPanel.setText("Find Readers");
         searchPanel.setColorHover(new java.awt.Color(102, 153, 255));
         searchPanel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -460,7 +457,7 @@ public class ManageReaders extends javax.swing.JFrame {
 
         jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 50));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/reader.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/reader.png"))); // NOI18N
         jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 530, -1, -1));
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 200, 700));
@@ -523,7 +520,7 @@ public class ManageReaders extends javax.swing.JFrame {
         btnAddRow.setBackground(new java.awt.Color(255, 255, 255));
         btnAddRow.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(102, 153, 255)));
         btnAddRow.setForeground(new java.awt.Color(0, 0, 0));
-        btnAddRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24X24add-1_icon-icons.com_65127.png"))); // NOI18N
+        btnAddRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/24X24add-1_icon-icons.com_65127.png"))); // NOI18N
         btnAddRow.setText("Add row");
         btnAddRow.setColorHover(new java.awt.Color(204, 0, 0));
         btnAddRow.setColorText(new java.awt.Color(0, 0, 0));
@@ -536,7 +533,7 @@ public class ManageReaders extends javax.swing.JFrame {
 
         btnSave.setBackground(new java.awt.Color(255, 255, 255));
         btnSave.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(102, 153, 255)));
-        btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24X24save_78935.png"))); // NOI18N
+        btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/24X24save_78935.png"))); // NOI18N
         btnSave.setText("Save");
         btnSave.setColorHover(new java.awt.Color(204, 0, 0));
         btnSave.setColorText(new java.awt.Color(0, 0, 0));
@@ -549,7 +546,7 @@ public class ManageReaders extends javax.swing.JFrame {
 
         jPanel9.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, 1110, 90));
 
-        jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/reader2.png"))); // NOI18N
+        jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/reader2.png"))); // NOI18N
         jPanel9.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 170, 140));
 
         AddReadersPanel.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 1300, 200));
@@ -664,7 +661,7 @@ public class ManageReaders extends javax.swing.JFrame {
         jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 110, 210, -1));
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/reading.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/reading.png"))); // NOI18N
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
 
         txtID.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -688,7 +685,7 @@ public class ManageReaders extends javax.swing.JFrame {
         jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 20, -1, -1));
 
         btnDelete.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(102, 255, 0)));
-        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/18x25trash.png"))); // NOI18N
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/18x25trash.png"))); // NOI18N
         btnDelete.setText("Delete");
         btnDelete.setColorHover(new java.awt.Color(204, 0, 51));
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -700,7 +697,7 @@ public class ManageReaders extends javax.swing.JFrame {
         jPanel1.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 90, 130, -1));
 
         btnEdit.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(102, 255, 0)));
-        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24x24 edit.png"))); // NOI18N
+        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/24x24 edit.png"))); // NOI18N
         btnEdit.setText("Edit");
         btnEdit.setColorHover(new java.awt.Color(204, 0, 51));
         btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -808,7 +805,7 @@ public class ManageReaders extends javax.swing.JFrame {
 
         rSButtonHover1.setBackground(new java.awt.Color(255, 255, 255));
         rSButtonHover1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 0, new java.awt.Color(0, 0, 0)));
-        rSButtonHover1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/24x24_searcher_magnifyng_glass_search_locate_find_icon_123813.png"))); // NOI18N
+        rSButtonHover1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/24x24_searcher_magnifyng_glass_search_locate_find_icon_123813.png"))); // NOI18N
         rSButtonHover1.setColorHover(new java.awt.Color(51, 255, 0));
         rSButtonHover1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -819,12 +816,12 @@ public class ManageReaders extends javax.swing.JFrame {
 
         searchAreaPanel.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1280, 100));
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/book-wall-1151405_1920.jpg"))); // NOI18N
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/book-wall-1151405_1920.jpg"))); // NOI18N
         searchAreaPanel.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 700));
 
         getContentPane().add(searchAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 50, 1300, 700));
 
-        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/book-wall-1151405_1920.jpg"))); // NOI18N
+        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/book-wall-1151405_1920.jpg"))); // NOI18N
         getContentPane().add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 50, 1300, 700));
 
         pack();

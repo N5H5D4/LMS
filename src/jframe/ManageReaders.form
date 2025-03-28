@@ -82,7 +82,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/adminIcons/li4.png"/>
+              <Image iconType="3" name="/PICTURE_icon/li4.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="jLabel1"/>
           </Properties>
@@ -98,7 +98,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/adminIcons/back_main_page_icon_124174.png"/>
+              <Image iconType="3" name="/PICTURE_icon/back_main_page_icon_124174.png"/>
             </Property>
             <Property name="colorHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="0" red="cc" type="rgb"/>
@@ -153,9 +153,6 @@
                 </MatteColorBorder>
               </Border>
             </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/adminIcons/24x24business_application_addthedatabase_add_insert_database_db_2313.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Add Readers"/>
             <Property name="colorHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="99" red="66" type="rgb"/>
@@ -185,9 +182,6 @@
                   <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                 </MatteColorBorder>
               </Border>
-            </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/adminIcons/24x24search_find_database_16703.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Find Readers"/>
             <Property name="colorHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -251,7 +245,7 @@
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/adminIcons/reader.png"/>
+              <Image iconType="3" name="/PICTURE_icon/reader.png"/>
             </Property>
           </Properties>
           <Constraints>
@@ -445,7 +439,7 @@
                       <Color blue="0" green="0" red="0" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/adminIcons/24X24add-1_icon-icons.com_65127.png"/>
+                      <Image iconType="3" name="/PICTURE_icon/24X24add-1_icon-icons.com_65127.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Add row"/>
                     <Property name="colorHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -477,7 +471,7 @@
                       </Border>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/adminIcons/24X24save_78935.png"/>
+                      <Image iconType="3" name="/PICTURE_icon/24X24save_78935.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Save"/>
                     <Property name="colorHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -501,7 +495,7 @@
             <Component class="javax.swing.JLabel" name="jLabel23">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/adminIcons/reader2.png"/>
+                  <Image iconType="3" name="/PICTURE_icon/reader2.png"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -775,7 +769,7 @@
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/adminIcons/reading.png"/>
+                  <Image iconType="3" name="/PICTURE_icon/reading.png"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -843,7 +837,7 @@
                   </Border>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/adminIcons/18x25trash.png"/>
+                  <Image iconType="3" name="/PICTURE_icon/18x25trash.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Delete"/>
                 <Property name="colorHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -872,7 +866,7 @@
                   </Border>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/adminIcons/24x24 edit.png"/>
+                  <Image iconType="3" name="/PICTURE_icon/24x24 edit.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Edit"/>
                 <Property name="colorHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -1180,7 +1174,7 @@
                   </Border>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/adminIcons/24x24_searcher_magnifyng_glass_search_locate_find_icon_123813.png"/>
+                  <Image iconType="3" name="/PICTURE_icon/24x24_searcher_magnifyng_glass_search_locate_find_icon_123813.png"/>
                 </Property>
                 <Property name="colorHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="ff" red="33" type="rgb"/>
@@ -1200,7 +1194,7 @@
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/adminIcons/book-wall-1151405_1920.jpg"/>
+              <Image iconType="3" name="/PICTURE_icon/book-wall-1151405_1920.jpg"/>
             </Property>
           </Properties>
           <Constraints>
@@ -1214,7 +1208,7 @@
     <Component class="javax.swing.JLabel" name="jLabel21">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/adminIcons/book-wall-1151405_1920.jpg"/>
+          <Image iconType="3" name="/PICTURE_icon/book-wall-1151405_1920.jpg"/>
         </Property>
       </Properties>
       <Constraints>

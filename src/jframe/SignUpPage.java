@@ -181,7 +181,6 @@ public class SignUpPage extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        txt_Pass = new app.bolivia.swing.JCTextField();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         txt_Email = new app.bolivia.swing.JCTextField();
@@ -190,6 +189,8 @@ public class SignUpPage extends javax.swing.JFrame {
         txt_PhoneNumber = new app.bolivia.swing.JCTextField();
         rSMaterialButtonCircle1 = new rojerusan.RSMaterialButtonCircle();
         rSMaterialButtonCircle2 = new rojerusan.RSMaterialButtonCircle();
+        jLabel1 = new javax.swing.JLabel();
+        txt_Pass = new rojerusan.RSPasswordTextPlaceHolder();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -214,7 +215,9 @@ public class SignUpPage extends javax.swing.JFrame {
         txt_UserName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         txt_UserName.setForeground(new java.awt.Color(0, 0, 0));
         txt_UserName.setToolTipText("");
-        txt_UserName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txt_UserName.setCaretColor(new java.awt.Color(0, 0, 0));
+        txt_UserName.setDisabledTextColor(new java.awt.Color(0, 51, 51));
+        txt_UserName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txt_UserName.setPlaceholder("ENTER YOUR NAME");
         txt_UserName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -230,8 +233,8 @@ public class SignUpPage extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel9.setText("CREATE NEW ACCOUNT");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, -1, -1));
+        jLabel9.setText("CREATE NEW ACCOUNT OR LOGIN");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 110, -1, -1));
 
         jLabel10.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 0, 0));
@@ -253,19 +256,6 @@ public class SignUpPage extends javax.swing.JFrame {
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/padlock.png"))); // NOI18N
         jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 280, -1, -1));
 
-        txt_Pass.setBackground(new java.awt.Color(255, 255, 255));
-        txt_Pass.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        txt_Pass.setForeground(new java.awt.Color(0, 0, 0));
-        txt_Pass.setToolTipText("");
-        txt_Pass.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        txt_Pass.setPlaceholder("ENTER PASSWORD");
-        txt_Pass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_PassActionPerformed(evt);
-            }
-        });
-        jPanel2.add(txt_Pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 290, 380, 40));
-
         jLabel14.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(0, 0, 0));
         jLabel14.setText("EMAIL");
@@ -280,7 +270,7 @@ public class SignUpPage extends javax.swing.JFrame {
         txt_Email.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         txt_Email.setForeground(new java.awt.Color(0, 0, 0));
         txt_Email.setToolTipText("");
-        txt_Email.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txt_Email.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txt_Email.setPlaceholder("ENTER YOUR NAME");
         txt_Email.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -303,7 +293,7 @@ public class SignUpPage extends javax.swing.JFrame {
         txt_PhoneNumber.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         txt_PhoneNumber.setForeground(new java.awt.Color(0, 0, 0));
         txt_PhoneNumber.setToolTipText("");
-        txt_PhoneNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txt_PhoneNumber.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txt_PhoneNumber.setPlaceholder("ENTER YOUR NAME");
         txt_PhoneNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -329,6 +319,16 @@ public class SignUpPage extends javax.swing.JFrame {
             }
         });
         jPanel2.add(rSMaterialButtonCircle2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 580, 380, 60));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/li4.png"))); // NOI18N
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        txt_Pass.setBackground(new java.awt.Color(255, 255, 255));
+        txt_Pass.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        txt_Pass.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txt_Pass.setPhColor(new java.awt.Color(0, 51, 51));
+        txt_Pass.setPlaceholder("ENTER PASSWORD");
+        jPanel2.add(txt_Pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 300, 380, 40));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 750));
 
@@ -356,10 +356,6 @@ public class SignUpPage extends javax.swing.JFrame {
     private void txt_UserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_UserNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_UserNameActionPerformed
-
-    private void txt_PassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_PassActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_PassActionPerformed
 
     private void txt_EmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_EmailActionPerformed
         // TODO add your handling code here:
@@ -429,6 +425,7 @@ public class SignUpPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -448,7 +445,7 @@ public class SignUpPage extends javax.swing.JFrame {
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle1;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle2;
     private app.bolivia.swing.JCTextField txt_Email;
-    private app.bolivia.swing.JCTextField txt_Pass;
+    private rojerusan.RSPasswordTextPlaceHolder txt_Pass;
     private app.bolivia.swing.JCTextField txt_PhoneNumber;
     private app.bolivia.swing.JCTextField txt_UserName;
     // End of variables declaration//GEN-END:variables
