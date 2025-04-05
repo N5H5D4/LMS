@@ -11,9 +11,11 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.Date;
 import jframe.DBConnection;
-
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public class BorrowSlipDAO {
 
@@ -229,4 +231,142 @@ public class BorrowSlipDAO {
             }
         }
     }
+
+    public static List<Map<String, Object>> getUnreturnedBorrowSlips(int readerId) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        String query = """
+        SELECT bs.id, bs.borrow_date, bs.due_date
+        FROM borrow_slips bs
+        JOIN borrow_details bd ON bs.id = bd.borrow_id
+        WHERE bs.reader_id = ? AND bd.status != 'Returned'
+        GROUP BY bs.id
+    """;
+
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setInt(1, readerId);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("id", rs.getInt("id"));
+                row.put("borrow_date", rs.getDate("borrow_date"));
+                row.put("due_date", rs.getDate("due_date"));
+                result.add(row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static List<Map<String, Object>> getBorrowDetailsBySlipId(int slipId) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        String query = """
+        SELECT bd.isbn, b.title, bd.status
+        FROM borrow_details bd
+        JOIN books b ON bd.isbn = b.isbn
+        WHERE bd.borrow_id = ?;
+    """;
+
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setInt(1, slipId);
+            ResultSet rs = pst.executeQuery();
+
+            
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("isbn", rs.getString("isbn"));
+                row.put("title", rs.getString("title"));
+                row.put("status", rs.getString("status"));
+                result.add(row);
+
+                
+                //System.out.println("Row: " + row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static String getBookStatus(int slipId, String isbn) {
+        String sql = "SELECT status FROM borrow_details WHERE borrow_id = ? AND isbn = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, slipId);
+            stmt.setString(2, isbn);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("status");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void updateBookStatus(int slipId, String isbn, String status) {
+        String sql = "UPDATE borrow_details SET status = ? WHERE borrow_id = ? AND isbn = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status);
+            stmt.setInt(2, slipId);
+            stmt.setString(3, isbn);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateReturnDate(int slipId, java.sql.Date returnDate) {
+        String sql = "UPDATE borrow_slips SET return_date = ? WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDate(1, returnDate);
+            stmt.setInt(2, slipId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static BigDecimal getBookPriceByISBN(String isbn) {
+        String sql = "SELECT price FROM books WHERE isbn = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, isbn);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getBigDecimal("price");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return BigDecimal.ZERO;
+    }
+
+    public static int getReaderIdBySlip(int slipId) {
+        String sql = "SELECT reader_id FROM borrow_slips WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, slipId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("reader_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static void insertPenalty(int readerId, int borrowId, BigDecimal amount, String reason) {
+        String sql = "INSERT INTO penalties (reader_id, borrow_id, amount, reason) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, readerId);
+            stmt.setInt(2, borrowId);
+            stmt.setBigDecimal(3, amount);
+            stmt.setString(4, reason);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

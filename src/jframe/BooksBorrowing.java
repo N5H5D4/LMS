@@ -19,13 +19,20 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.ListSelectionModel;
 import java.time.Year;
 import javax.swing.table.DefaultTableModel;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.HashMap;
 import DAO.*;
+import java.util.Map;
+
+import java.math.BigDecimal;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,13 +53,14 @@ public class BooksBorrowing extends javax.swing.JFrame {
         multiSlipPanel.setVisible(false);
         addAreaPanel.setVisible(false);
         searchAreaPanel.setVisible(false);
+        ReturnBookPanel.setVisible(false);
         initBookTitleSearch();
         initTableEvents();
 
         populateYearComboBox();
-        
-        setFieldsNonEditable();
 
+        setFieldsNonEditable();
+        jLabel_Warning.setVisible(false);
     }
 
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -95,42 +103,65 @@ public class BooksBorrowing extends javax.swing.JFrame {
         suggestionPopup.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
         suggestionPopup.add(new JScrollPane(bookList));
 
-        // Thêm sự kiện keyboard cho ô nhập txtTitle. 
-        txtTitle.addKeyListener(new KeyAdapter() {
+        KeyAdapter titleKeyListener = new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 if (searchTimer != null) {
                     searchTimer.cancel(); // Hủy bộ đếm thời gian trước đó nếu tồn tại.
                 }
 
-                String keyword = txtTitle.getText().trim();
-                if (keyword.length() > 1) { // Chỉ thực hiện tìm kiếm khi từ khóa có nhiều hơn 1 ký tự.
+                JTextField source = (JTextField) e.getSource(); // Lấy text field nào đang nhập
+                String keyword = source.getText().trim();
+
+                if (keyword.length() > 1) { // Chỉ tìm kiếm khi từ khóa có nhiều hơn 1 ký tự
                     searchTimer = new Timer();
                     searchTimer.schedule(new TimerTask() {
                         @Override
                         public void run() {
                             SwingUtilities.invokeLater(() -> updateSuggestionList(keyword));
                         }
-                    }, 350); //delay 350ms 
+                    }, 350); // Delay 350ms
                 } else {
                     suggestionPopup.setVisible(false);
                 }
             }
-        });
+        };
 
-        // Thêm sự kiện khi  nhấp vào một mục trong danh sách gợi ý
+        // Gán KeyListener cho cả hai text field
+        txtTitle.addKeyListener(titleKeyListener);
+        //txtTitle2.addKeyListener(titleKeyListener);
+
+        FocusListener titleFocusListener = new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                activeTitleField = (JTextField) e.getSource();
+            }
+        };
+
+        txtTitle.addFocusListener(titleFocusListener);
+        //txtTitle2.addFocusListener(titleFocusListener);
+
         bookList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 2) { // Nhấn đúp chuột
                     int index = bookList.getSelectedIndex();
                     if (index != -1) {
                         String selectedTitle = bookList.getSelectedValue();
                         List<String[]> results = BorrowSlipDAO.searchBooksByTitle(selectedTitle);
                         if (!results.isEmpty()) {
-                            String selectedISBN = results.get(0)[0]; // Lấy ISBN của sách được chọn
-                            txtISBN.setText(selectedISBN); // Điền ISBN vào ô nhập ISBN
-                            txtTitle.setText(selectedTitle); // Điền tiêu đề vào ô nhập Title.
+                            String selectedISBN = results.get(0)[0]; // Lấy ISBN
+
+                            // Xác định cặp JTextField cần điền
+                            if (activeTitleField == txtTitle) {
+                                txtISBN.setText(selectedISBN);
+                                txtTitle.setText(selectedTitle);
+                            }
+                            /*else if (activeTitleField == txtTitle2) {
+                                txtISBN2.setText(selectedISBN);
+                                txtTitle2.setText(selectedTitle);
+                            }*/
+
                             suggestionPopup.setVisible(false);
                         }
                     }
@@ -153,25 +184,25 @@ public class BooksBorrowing extends javax.swing.JFrame {
         });
     }
 
-    // Cập nhật danh sách gợi ý dựa trên từ khóa tìm kiếm.
     private void updateSuggestionList(String keyword) {
         List<String[]> results = BorrowSlipDAO.searchBooksByTitle(keyword);
-        listModel.clear(); // Xóa tất cả các phần tử cũ trong danh sách.
+        listModel.clear(); // Xóa danh sách cũ
 
         for (String[] book : results) {
-            listModel.addElement(book[1]); // Thêm tên sách (title) vào mô hình danh sách.
+            listModel.addElement(book[1]); // Chỉ hiển thị Title
         }
 
         if (!results.isEmpty()) {
-            int txtWidth = txtTitle.getWidth();
+            int txtWidth = activeTitleField.getWidth();
             int popupWidth = Math.max(txtWidth, 300);
 
             suggestionPopup.setPopupSize(new Dimension(popupWidth, 150));
-            suggestionPopup.show(txtTitle, (txtTitle.getWidth() - popupWidth) / 2, txtTitle.getHeight());
+            suggestionPopup.show(activeTitleField, 0, activeTitleField.getHeight()); // Đảm bảo hiện popup đúng chỗ
         } else {
-            suggestionPopup.setVisible(false); // Ẩn popup nếu không có kết quả tìm kiếm.
+            suggestionPopup.setVisible(false);
         }
     }
+
 
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     MULTIPLE SLIPS FORM
@@ -483,6 +514,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "ERROR: " + e.getMessage(), "error", JOptionPane.ERROR_MESSAGE);
         }
+
     }
 
     private String getValue(DefaultTableModel model, int row, int column) {
@@ -498,6 +530,207 @@ public class BooksBorrowing extends javax.swing.JFrame {
         txtReaderName1.setEditable(false);
     }
 
+    /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   BOOK RETURN FORM
+ -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+// Hiển thị dialog chọn phiếu mượn chưa trả hết
+    private void showBorrowSlipSelectionDialog(List<Map<String, Object>> slips) {
+        JDialog dialog = new JDialog((Frame) null, "List of unprocessed book borrowing forms", true);
+        dialog.setSize(800, 400);
+        dialog.setLayout(new BorderLayout());
+        dialog.getContentPane().setBackground(new Color(245, 245, 245));
+        dialog.getContentPane().setForeground(Color.DARK_GRAY);
+        dialog.setLocation(350, 175);
+
+        DefaultTableModel model = new DefaultTableModel(new Object[]{"ID", "Borrow Date", "Due Date"}, 0);
+        JTable table = new JTable(model);
+
+        // Duyệt qua danh sách phiếu mượn và thêm vào bảng
+        for (Map<String, Object> slip : slips) {
+            model.addRow(new Object[]{
+                slip.get("id"),
+                slip.get("borrow_date"),
+                slip.get("due_date")
+            });
+        }
+
+        table.setRowHeight(30);
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        table.setBackground(Color.WHITE);
+        table.setForeground(Color.DARK_GRAY);
+        table.setSelectionBackground(new Color(135, 206, 250));
+        table.setSelectionForeground(Color.BLACK);
+        table.setShowGrid(true);
+        table.setGridColor(Color.GRAY);
+
+        JTableHeader header = table.getTableHeader();
+        header.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        header.setBackground(new Color(230, 230, 230));
+        header.setForeground(Color.BLACK);
+
+        table.setEnabled(true);
+        table.setFocusable(true);
+
+        // Xử lý sự kiện khi người dùng click vào một dòng trong bảng
+        table.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                JTable sourceTable = (JTable) e.getSource();
+                int row = sourceTable.rowAtPoint(e.getPoint());
+
+                if (row != -1) {
+                    sourceTable.setRowSelectionInterval(row, row);
+
+                    if (e.getClickCount() == 2) {
+                        int slipId = (int) sourceTable.getValueAt(row, 0);
+                        selectedSlipId = slipId;
+
+                        Date borrowDate = (Date) sourceTable.getValueAt(row, 1);
+                        Date dueDate = (Date) sourceTable.getValueAt(row, 2);
+                        txtRETURN_DATE.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+
+                        txtBORROW_DATE.setText(borrowDate.toString());
+                        txtDUE_DATE.setText(dueDate.toString());
+
+                        loadBorrowDetails(slipId);
+                        dialog.dispose();
+                    }
+                }
+            }
+        });
+
+        dialog.add(new JScrollPane(table), BorderLayout.CENTER);
+        dialog.setVisible(true);
+    }
+
+// Load chi tiết các sách trong phiếu mượn
+    private void loadBorrowDetails(int slipId) {
+        List<Map<String, Object>> details = BorrowSlipDAO.getBorrowDetailsBySlipId(slipId);
+
+        // Tạo một Map để lưu status ban đầu từ CSDL
+        Map<String, String> initialStatusMap = new HashMap<>();
+        for (Map<String, Object> row : details) {
+            initialStatusMap.put((String) row.get("isbn"), (String) row.get("status"));
+        }
+
+        DefaultTableModel model = new DefaultTableModel(new Object[]{"ISBN", "Title", "Status"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                String isbn = (String) getValueAt(row, 0);
+                String initialStatus = initialStatusMap.get(isbn);
+                // Chỉ khóa chỉnh sửa nếu status ban đầu từ CSDL là "Returned"
+                return column == 2 && !"Returned".equals(initialStatus);
+            }
+        };
+
+        for (Map<String, Object> row : details) {
+            model.addRow(new Object[]{
+                row.get("isbn"),
+                row.get("title"),
+                row.get("status")
+            });
+        }
+
+        tblBOOK_BORROW_LIST.setModel(model);
+
+        // Gán comboBox cho cột Status
+        String[] statusOptions = {"Borrowed", "Returned", "Lost"};
+        JComboBox<String> comboBox = new JComboBox<>(statusOptions);
+        TableColumn statusColumn = tblBOOK_BORROW_LIST.getColumnModel().getColumn(2);
+        statusColumn.setCellEditor(new DefaultCellEditor(comboBox));
+
+        // Renderer đổi màu chỉ khi status ban đầu từ CSDL là "Returned"
+        tblBOOK_BORROW_LIST.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                String isbn = (String) table.getModel().getValueAt(row, 0);
+                String initialStatus = initialStatusMap.get(isbn);
+
+                // Chỉ set màu đỏ nếu status ban đầu từ CSDL là "Returned"
+                if ("Returned".equals(initialStatus)) {
+                    c.setBackground(new Color(255, 102, 102));
+                } else {
+                    c.setBackground(isSelected ? table.getSelectionBackground() : Color.WHITE);
+                }
+
+                return c;
+            }
+        });
+    }
+
+// Lưu phiếu trả sách và cập nhật trạng thái các sách
+    private void btnSaveReturnActionPerformed() {
+        int slipId = selectedSlipId;
+        if (selectedSlipId == -1) {
+            JOptionPane.showMessageDialog(this, "You have not selected a borrow slip to return.");
+            return;
+        }
+        DefaultTableModel model = (DefaultTableModel) tblBOOK_BORROW_LIST.getModel();
+
+        boolean hasChanges = false;
+        boolean allReturnedOrLost = true;
+
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String isbn = model.getValueAt(i, 0).toString();
+            String status = model.getValueAt(i, 2).toString();
+
+            // Lấy status cũ từ CSDL
+            String oldStatus = BorrowSlipDAO.getBookStatus(slipId, isbn);
+            if (!status.equals(oldStatus)) {
+                hasChanges = true;
+                BorrowSlipDAO.updateBookStatus(slipId, isbn, status);
+
+                if ("Lost".equals(status)) {
+                    BigDecimal price = BorrowSlipDAO.getBookPriceByISBN(isbn);
+                    int readerId = BorrowSlipDAO.getReaderIdBySlip(slipId);
+                    String reason = "Lost book: " + isbn;
+                    BorrowSlipDAO.insertPenalty(readerId, slipId, price, reason);
+                }
+            }
+
+            if (!"Returned".equals(status) && !"Lost".equals(status)) {
+                allReturnedOrLost = false;
+            }
+        }
+
+        if (hasChanges) {
+            try {
+                String returnDateStr = txtRETURN_DATE.getText().trim();
+                java.sql.Date returnDate = java.sql.Date.valueOf(returnDateStr);
+
+                BorrowSlipDAO.updateReturnDate(slipId, returnDate); // Cập nhật ngày trả
+                JOptionPane.showMessageDialog(null, "Return slip saved successfully!");
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(null, "Invalid date format! Please use YYYY-MM-DD.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No changes to save.");
+        }
+        checkForLostBooksAndWarn();
+    }
+
+// Kiểm tra và cảnh báo phatj nếu có sách bị mất
+    private void checkForLostBooksAndWarn() {
+        boolean hasLostBook = false;
+        DefaultTableModel model = (DefaultTableModel) tblBOOK_BORROW_LIST.getModel();
+
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String status = (String) model.getValueAt(i, 2);
+            if ("Lost".equalsIgnoreCase(status)) {
+                hasLostBook = true;
+                break;
+            }
+        }
+
+        if (hasLostBook) {
+            jLabel_Warning.setVisible(true);
+        } else {
+            jLabel_Warning.setVisible(false);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -507,6 +740,28 @@ public class BooksBorrowing extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ReturnBookPanel = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblBOOK_BORROW_LIST = new javax.swing.JTable();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        txtReaderID2 = new app.bolivia.swing.JCTextField();
+        jLabel31 = new javax.swing.JLabel();
+        lblReaderName2 = new javax.swing.JLabel();
+        jPanel12 = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        txtDUE_DATE = new app.bolivia.swing.JCTextField();
+        txtBORROW_DATE = new app.bolivia.swing.JCTextField();
+        txtRETURN_DATE = new app.bolivia.swing.JCTextField();
+        jLabel37 = new javax.swing.JLabel();
+        jPanel14 = new javax.swing.JPanel();
+        btnSAVE_RETURN_FORM = new rojeru_san.complementos.RSButtonHover();
+        btnView = new rojerusan.RSButtonHover();
+        btnCLEAR = new rojeru_san.complementos.RSButtonHover();
+        jLabel_Warning = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -518,6 +773,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        btnReturn = new rojeru_san.complementos.RSButtonHover();
         searchAreaPanel = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         txtSearch = new app.bolivia.swing.JCTextField();
@@ -587,6 +843,204 @@ public class BooksBorrowing extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        ReturnBookPanel.setBackground(new java.awt.Color(255, 255, 255));
+        ReturnBookPanel.setBorder(new javax.swing.border.MatteBorder(null));
+        ReturnBookPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tblBOOK_BORROW_LIST.setBackground(new java.awt.Color(255, 255, 255));
+        tblBOOK_BORROW_LIST.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tblBOOK_BORROW_LIST.setForeground(new java.awt.Color(0, 0, 0));
+        tblBOOK_BORROW_LIST.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ISBN", "Title", "Status"
+            }
+        ));
+        tblBOOK_BORROW_LIST.setGridColor(new java.awt.Color(0, 51, 51));
+        tblBOOK_BORROW_LIST.setIntercellSpacing(new java.awt.Dimension(1, 1));
+        tblBOOK_BORROW_LIST.setPreferredSize(new java.awt.Dimension(800, 2000));
+        tblBOOK_BORROW_LIST.setRowHeight(30);
+        tblBOOK_BORROW_LIST.setSelectionBackground(new java.awt.Color(255, 204, 255));
+        tblBOOK_BORROW_LIST.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        tblBOOK_BORROW_LIST.setShowGrid(true);
+        tblBOOK_BORROW_LIST.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tblBOOK_BORROW_LISTFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tblBOOK_BORROW_LISTFocusLost(evt);
+            }
+        });
+        tblBOOK_BORROW_LIST.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblBOOK_BORROW_LISTMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tblBOOK_BORROW_LIST);
+
+        ReturnBookPanel.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 270, 800, 350));
+
+        jLabel29.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel29.setText("BOOK RETURN FORM");
+        jLabel29.setToolTipText("");
+        ReturnBookPanel.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 390, -1));
+
+        jLabel30.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel30.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel30.setText("Reader's ID:");
+        ReturnBookPanel.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
+
+        txtReaderID2.setBackground(new java.awt.Color(255, 255, 255));
+        txtReaderID2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        txtReaderID2.setForeground(new java.awt.Color(0, 0, 0));
+        txtReaderID2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtReaderID2.setToolTipText("");
+        txtReaderID2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtReaderID2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtReaderID2ActionPerformed(evt);
+            }
+        });
+        ReturnBookPanel.add(txtReaderID2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 170, 310, 40));
+
+        jLabel31.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel31.setText("Reader's name:");
+        ReturnBookPanel.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
+
+        lblReaderName2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblReaderName2.setForeground(new java.awt.Color(0, 0, 0));
+        lblReaderName2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblReaderName2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        ReturnBookPanel.add(lblReaderName2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, 280, 40));
+
+        jPanel12.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel12.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 3, new java.awt.Color(255, 255, 255)));
+        jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        ReturnBookPanel.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 50));
+
+        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel13.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel34.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel34.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel34.setText("Return date: ");
+        jPanel13.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, -1, -1));
+
+        jLabel35.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel35.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel35.setText("Due date: ");
+        jPanel13.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
+
+        jLabel36.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel36.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel36.setText("Date borrow: ");
+        jPanel13.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
+
+        txtDUE_DATE.setEditable(false);
+        txtDUE_DATE.setBackground(new java.awt.Color(255, 255, 255));
+        txtDUE_DATE.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        txtDUE_DATE.setForeground(new java.awt.Color(0, 0, 0));
+        txtDUE_DATE.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDUE_DATE.setToolTipText("");
+        txtDUE_DATE.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtDUE_DATE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDUE_DATEActionPerformed(evt);
+            }
+        });
+        jPanel13.add(txtDUE_DATE, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, 300, 50));
+
+        txtBORROW_DATE.setEditable(false);
+        txtBORROW_DATE.setBackground(new java.awt.Color(255, 255, 255));
+        txtBORROW_DATE.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        txtBORROW_DATE.setForeground(new java.awt.Color(0, 0, 0));
+        txtBORROW_DATE.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtBORROW_DATE.setToolTipText("");
+        txtBORROW_DATE.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtBORROW_DATE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBORROW_DATEActionPerformed(evt);
+            }
+        });
+        jPanel13.add(txtBORROW_DATE, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, 300, 50));
+
+        txtRETURN_DATE.setBackground(new java.awt.Color(255, 255, 255));
+        txtRETURN_DATE.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        txtRETURN_DATE.setForeground(new java.awt.Color(0, 0, 0));
+        txtRETURN_DATE.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtRETURN_DATE.setToolTipText("");
+        txtRETURN_DATE.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtRETURN_DATE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRETURN_DATEActionPerformed(evt);
+            }
+        });
+        jPanel13.add(txtRETURN_DATE, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 170, 300, 50));
+
+        ReturnBookPanel.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, 570, 230));
+
+        jLabel37.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel37.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel37.setText("List of borrowed books ");
+        ReturnBookPanel.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 230, 800, -1));
+
+        jPanel14.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel14.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 3, new java.awt.Color(0, 51, 51)));
+        jPanel14.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnSAVE_RETURN_FORM.setBackground(new java.awt.Color(102, 153, 255));
+        btnSAVE_RETURN_FORM.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(255, 255, 255)));
+        btnSAVE_RETURN_FORM.setText("SAVE");
+        btnSAVE_RETURN_FORM.setColorHover(new java.awt.Color(255, 0, 51));
+        btnSAVE_RETURN_FORM.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnSAVE_RETURN_FORM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSAVE_RETURN_FORMActionPerformed(evt);
+            }
+        });
+        jPanel14.add(btnSAVE_RETURN_FORM, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 20, 140, 50));
+
+        btnView.setBackground(new java.awt.Color(255, 255, 255));
+        btnView.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        btnView.setForeground(new java.awt.Color(0, 0, 0));
+        btnView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/search.png"))); // NOI18N
+        btnView.setColorHover(new java.awt.Color(255, 255, 255));
+        btnView.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewActionPerformed(evt);
+            }
+        });
+        jPanel14.add(btnView, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 40, 50));
+
+        btnCLEAR.setBackground(new java.awt.Color(102, 153, 255));
+        btnCLEAR.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(255, 255, 255)));
+        btnCLEAR.setText("CLEAR ALL");
+        btnCLEAR.setColorHover(new java.awt.Color(255, 0, 51));
+        btnCLEAR.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnCLEAR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCLEARActionPerformed(evt);
+            }
+        });
+        jPanel14.add(btnCLEAR, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 20, 140, 50));
+
+        ReturnBookPanel.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 1260, 85));
+
+        jLabel_Warning.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel_Warning.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel_Warning.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/alert_attention_warning_icon.png"))); // NOI18N
+        jLabel_Warning.setText("This reader will be fined due to lost books!");
+        ReturnBookPanel.add(jLabel_Warning, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 60, -1, -1));
+
+        getContentPane().add(ReturnBookPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 50, 1300, 700));
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 51));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -670,6 +1124,23 @@ public class BooksBorrowing extends javax.swing.JFrame {
         jPanel5.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, -1, 50));
 
         jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, -1));
+
+        btnReturn.setBackground(new java.awt.Color(0, 51, 51));
+        btnReturn.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
+        btnReturn.setText("Return Book Slips");
+        btnReturn.setColorHover(new java.awt.Color(102, 153, 255));
+        btnReturn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnReturn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnReturnMouseClicked(evt);
+            }
+        });
+        btnReturn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnReturn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 180, -1));
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 200, 700));
 
@@ -789,16 +1260,18 @@ public class BooksBorrowing extends javax.swing.JFrame {
         jPanel7.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(0, 51, 51)));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        txtISBN1.setBackground(new java.awt.Color(0, 51, 51));
+        txtISBN1.setBackground(new java.awt.Color(255, 255, 255));
         txtISBN1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtISBN1.setForeground(new java.awt.Color(255, 255, 255));
+        txtISBN1.setForeground(new java.awt.Color(0, 0, 0));
         txtISBN1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtISBN1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(102, 153, 255)));
         jPanel7.add(txtISBN1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 160, -1));
 
-        txtTitle1.setBackground(new java.awt.Color(0, 51, 51));
+        txtTitle1.setBackground(new java.awt.Color(255, 255, 255));
         txtTitle1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtTitle1.setForeground(new java.awt.Color(255, 255, 255));
+        txtTitle1.setForeground(new java.awt.Color(0, 0, 0));
         txtTitle1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTitle1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(102, 153, 255)));
         txtTitle1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTitle1ActionPerformed(evt);
@@ -806,10 +1279,11 @@ public class BooksBorrowing extends javax.swing.JFrame {
         });
         jPanel7.add(txtTitle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 200, -1));
 
-        txtReaderName1.setBackground(new java.awt.Color(0, 51, 51));
+        txtReaderName1.setBackground(new java.awt.Color(255, 255, 255));
         txtReaderName1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtReaderName1.setForeground(new java.awt.Color(255, 255, 255));
+        txtReaderName1.setForeground(new java.awt.Color(0, 0, 0));
         txtReaderName1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtReaderName1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(102, 153, 255)));
         txtReaderName1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtReaderName1ActionPerformed(evt);
@@ -817,10 +1291,11 @@ public class BooksBorrowing extends javax.swing.JFrame {
         });
         jPanel7.add(txtReaderName1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, 200, -1));
 
-        txtBorrowedDate.setBackground(new java.awt.Color(0, 51, 51));
+        txtBorrowedDate.setBackground(new java.awt.Color(255, 255, 255));
         txtBorrowedDate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtBorrowedDate.setForeground(new java.awt.Color(255, 255, 255));
+        txtBorrowedDate.setForeground(new java.awt.Color(0, 0, 0));
         txtBorrowedDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtBorrowedDate.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(102, 153, 255)));
         txtBorrowedDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtBorrowedDateActionPerformed(evt);
@@ -828,8 +1303,11 @@ public class BooksBorrowing extends javax.swing.JFrame {
         });
         jPanel7.add(txtBorrowedDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 40, 160, -1));
 
+        txtReturnDate.setBackground(new java.awt.Color(255, 255, 255));
         txtReturnDate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtReturnDate.setForeground(new java.awt.Color(0, 0, 0));
         txtReturnDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtReturnDate.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 0, 51)));
         txtReturnDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtReturnDateActionPerformed(evt);
@@ -837,8 +1315,11 @@ public class BooksBorrowing extends javax.swing.JFrame {
         });
         jPanel7.add(txtReturnDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 110, 150, -1));
 
+        txtStatus.setBackground(new java.awt.Color(255, 255, 255));
         txtStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtStatus.setForeground(new java.awt.Color(0, 0, 0));
         txtStatus.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtStatus.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 0, 51)));
         txtStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtStatusActionPerformed(evt);
@@ -846,8 +1327,11 @@ public class BooksBorrowing extends javax.swing.JFrame {
         });
         jPanel7.add(txtStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 40, 150, -1));
 
+        txtDueDate.setBackground(new java.awt.Color(255, 255, 255));
         txtDueDate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtDueDate.setForeground(new java.awt.Color(0, 0, 0));
         txtDueDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDueDate.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 0, 51)));
         jPanel7.add(txtDueDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 110, 160, -1));
 
         btnEdit.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(102, 255, 0)));
@@ -918,10 +1402,11 @@ public class BooksBorrowing extends javax.swing.JFrame {
         jLabel24.setText("Return Date:");
         jPanel7.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 90, -1, -1));
 
-        txtReaderID1.setBackground(new java.awt.Color(0, 51, 51));
+        txtReaderID1.setBackground(new java.awt.Color(255, 255, 255));
         txtReaderID1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtReaderID1.setForeground(new java.awt.Color(255, 255, 255));
+        txtReaderID1.setForeground(new java.awt.Color(0, 0, 0));
         txtReaderID1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtReaderID1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(102, 153, 255)));
         jPanel7.add(txtReaderID1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 110, 160, 30));
 
         searchAreaPanel.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 1280, 150));
@@ -1163,7 +1648,6 @@ public class BooksBorrowing extends javax.swing.JFrame {
 
         btnSingleSave.setBackground(new java.awt.Color(102, 153, 255));
         btnSingleSave.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(0, 51, 51)));
-        btnSingleSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/24X24save_78935.png"))); // NOI18N
         btnSingleSave.setText("SAVE");
         btnSingleSave.setColorHover(new java.awt.Color(255, 0, 51));
         btnSingleSave.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -1215,6 +1699,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         addAreaPanel.setVisible(true);
         searchAreaPanel.setVisible(false);
+        ReturnBookPanel.setVisible(false);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void searchPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchPanelMouseClicked
@@ -1225,6 +1710,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
     private void searchPanelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchPanelActionPerformed
         addAreaPanel.setVisible(false);
         searchAreaPanel.setVisible(true);
+        ReturnBookPanel.setVisible(false);
     }//GEN-LAST:event_searchPanelActionPerformed
 
     private void btnSingleSlipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSingleSlipActionPerformed
@@ -1498,6 +1984,85 @@ public class BooksBorrowing extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbCriteriaActionPerformed
 
+    private void btnReturnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReturnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReturnMouseClicked
+
+    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
+        addAreaPanel.setVisible(false);
+        searchAreaPanel.setVisible(false);
+        ReturnBookPanel.setVisible(true);
+    }//GEN-LAST:event_btnReturnActionPerformed
+
+    private void txtReaderID2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtReaderID2ActionPerformed
+        String readerIDText = txtReaderID2.getText().trim();
+        if (!readerIDText.isEmpty()) {
+            try {
+                int readerID = Integer.parseInt(readerIDText);
+                String readerName = ReaderDAO.getReaderNameByID(readerID);
+                lblReaderName2.setText(readerName.isEmpty() ? "Không tìm thấy độc giả" : readerName);
+            } catch (NumberFormatException ex) {
+                lblReaderName2.setText("Reader ID không hợp lệ");
+            }
+        }
+    }//GEN-LAST:event_txtReaderID2ActionPerformed
+
+    private void txtDUE_DATEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDUE_DATEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDUE_DATEActionPerformed
+
+    private void btnSAVE_RETURN_FORMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSAVE_RETURN_FORMActionPerformed
+        btnSaveReturnActionPerformed();
+    }//GEN-LAST:event_btnSAVE_RETURN_FORMActionPerformed
+
+    private void txtBORROW_DATEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBORROW_DATEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBORROW_DATEActionPerformed
+
+    private void txtRETURN_DATEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRETURN_DATEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRETURN_DATEActionPerformed
+
+    private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
+        String readerIdText = txtReaderID2.getText().trim();
+        if (!readerIdText.isEmpty()) {
+            int readerId = Integer.parseInt(readerIdText);
+            List<Map<String, Object>> slips = BorrowSlipDAO.getUnreturnedBorrowSlips(readerId);
+            if (!slips.isEmpty()) {
+                showBorrowSlipSelectionDialog(slips);
+            } else {
+                JOptionPane.showMessageDialog(null, "No active borrow slips found for this reader.");
+            }
+        }
+    }//GEN-LAST:event_btnViewActionPerformed
+
+    private void tblBOOK_BORROW_LISTFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tblBOOK_BORROW_LISTFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblBOOK_BORROW_LISTFocusGained
+
+    private void tblBOOK_BORROW_LISTFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tblBOOK_BORROW_LISTFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblBOOK_BORROW_LISTFocusLost
+
+    private void tblBOOK_BORROW_LISTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBOOK_BORROW_LISTMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblBOOK_BORROW_LISTMouseClicked
+
+    private void btnCLEARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCLEARActionPerformed
+        txtReaderID2.setText("");
+        txtBORROW_DATE.setText("");
+        txtDUE_DATE.setText("");
+        txtRETURN_DATE.setText("");
+        lblReaderName2.setText("");
+        jLabel_Warning.setVisible(false);
+        selectedSlipId = -1;
+        // Xóa dữ liệu trong bảng danh sách sách mượn
+        DefaultTableModel model = (DefaultTableModel) tblBOOK_BORROW_LIST.getModel();
+        model.setRowCount(0);
+        TableColumn statusColumn = tblBOOK_BORROW_LIST.getColumnModel().getColumn(2);
+        statusColumn.setCellEditor(null);
+    }//GEN-LAST:event_btnCLEARActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1532,28 +2097,34 @@ public class BooksBorrowing extends javax.swing.JFrame {
             }
         });
     }
-
+    private JTextField activeTitleField;
     private Timer searchTimer;
     private DefaultListModel<String> listModel;
     private JList<String> bookList;
     private JPopupMenu suggestionPopup;
-
+    private JTable borrowDetailsTable;
     private JPopupMenu suggestionPopupMulti;
     private JList<String> bookListMulti;
     private DefaultListModel<String> listModelMulti;
+    private int selectedSlipId = -1;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel ReturnBookPanel;
     private javax.swing.JPanel addAreaPanel;
     private rojeru_san.complementos.RSButtonHover btnAdd;
     private rojeru_san.complementos.RSButtonHover btnAddRow;
     private rojeru_san.complementos.RSButtonHover btnAddRow1;
     private rojerusan.RSButtonHover btnBack;
+    private rojeru_san.complementos.RSButtonHover btnCLEAR;
     private rojerusan.RSButtonHover btnDelete;
     private rojerusan.RSButtonHover btnEdit;
     private rojerusan.RSButtonHover btnMultiSlip;
+    private rojeru_san.complementos.RSButtonHover btnReturn;
+    private rojeru_san.complementos.RSButtonHover btnSAVE_RETURN_FORM;
     private rojeru_san.complementos.RSButtonHover btnSaveMultiple;
     private rojeru_san.complementos.RSButtonHover btnSingleSave;
     private rojeru_san.complementos.RSButtonHover btnSingleSlip;
+    private rojerusan.RSButtonHover btnView;
     private javax.swing.JComboBox<String> cmbCriteria;
     private javax.swing.JComboBox<String> cmbMonth;
     private javax.swing.JComboBox<String> cmbYear;
@@ -1578,16 +2149,27 @@ public class BooksBorrowing extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel_Warning;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1598,22 +2180,29 @@ public class BooksBorrowing extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblBookTitle;
     private javax.swing.JLabel lblReaderName;
+    private javax.swing.JLabel lblReaderName2;
     private javax.swing.JPanel multiSlipPanel;
     private rojerusan.RSButtonHover rSButtonHover1;
     private javax.swing.JPanel searchAreaPanel;
     private rojeru_san.complementos.RSButtonHover searchPanel;
     private javax.swing.JPanel singleSlipPanel;
+    private javax.swing.JTable tblBOOK_BORROW_LIST;
     private javax.swing.JTable tblBooks;
     private javax.swing.JTable tblBorrowSlips;
+    private app.bolivia.swing.JCTextField txtBORROW_DATE;
     private javax.swing.JTextField txtBorrowedDate;
     private app.bolivia.swing.JCTextField txtDATE;
+    private app.bolivia.swing.JCTextField txtDUE_DATE;
     private javax.swing.JTextField txtDueDate;
     private app.bolivia.swing.JCTextField txtISBN;
     private javax.swing.JTextField txtISBN1;
+    private app.bolivia.swing.JCTextField txtRETURN_DATE;
     private app.bolivia.swing.JCTextField txtReaderID;
     private javax.swing.JTextField txtReaderID1;
+    private app.bolivia.swing.JCTextField txtReaderID2;
     private javax.swing.JTextField txtReaderName1;
     private javax.swing.JTextField txtReturnDate;
     private app.bolivia.swing.JCTextField txtSearch;
