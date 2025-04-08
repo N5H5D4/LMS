@@ -41,13 +41,14 @@ public class HomePage extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         btnMR = new rojerusan.RSButtonHover();
         btnBBF = new rojerusan.RSButtonHover();
-        btnPF = new rojerusan.RSButtonHover();
+        btnMP = new rojerusan.RSButtonHover();
         btnMB = new rojerusan.RSButtonHover();
+        btnMP1 = new rojerusan.RSButtonHover();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        btnMR4 = new rojerusan.RSButtonHover();
+        btnLOGOUT = new rojerusan.RSButtonHover();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -83,7 +84,7 @@ public class HomePage extends javax.swing.JFrame {
         jLabel4.setBackground(new java.awt.Color(102, 153, 255));
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/24x24_home-silhouette-on-black-square-background_icon-icons.com_70471.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/home.png"))); // NOI18N
         jLabel4.setText("HOME PAGE");
         jLabel4.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 0, new java.awt.Color(255, 255, 255)));
         jPanel13.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 170, 50));
@@ -119,7 +120,7 @@ public class HomePage extends javax.swing.JFrame {
         btnMR.setBackground(new java.awt.Color(255, 255, 255));
         btnMR.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         btnMR.setForeground(new java.awt.Color(0, 51, 51));
-        btnMR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/24x24 reader.png"))); // NOI18N
+        btnMR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/book-reader.png"))); // NOI18N
         btnMR.setText("Manage  Readers");
         btnMR.setColorHover(new java.awt.Color(204, 0, 51));
         btnMR.setColorText(new java.awt.Color(0, 51, 51));
@@ -134,8 +135,8 @@ public class HomePage extends javax.swing.JFrame {
         btnBBF.setBackground(new java.awt.Color(255, 255, 255));
         btnBBF.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         btnBBF.setForeground(new java.awt.Color(0, 51, 51));
-        btnBBF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/24x24_form_line_icon_235623.png"))); // NOI18N
-        btnBBF.setText("Manage Book Borrowing");
+        btnBBF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/online-survey.png"))); // NOI18N
+        btnBBF.setText("Managing Borrow Slips");
         btnBBF.setColorHover(new java.awt.Color(204, 0, 51));
         btnBBF.setColorText(new java.awt.Color(0, 51, 51));
         btnBBF.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -146,26 +147,26 @@ public class HomePage extends javax.swing.JFrame {
         });
         jPanel4.add(btnBBF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 200, -1));
 
-        btnPF.setBackground(new java.awt.Color(255, 255, 255));
-        btnPF.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        btnPF.setForeground(new java.awt.Color(0, 51, 51));
-        btnPF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/coins-stacks-money_icon-icons.com_56191.png"))); // NOI18N
-        btnPF.setText("Penalty Fees");
-        btnPF.setColorHover(new java.awt.Color(204, 0, 51));
-        btnPF.setColorText(new java.awt.Color(0, 51, 51));
-        btnPF.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnPF.addActionListener(new java.awt.event.ActionListener() {
+        btnMP.setBackground(new java.awt.Color(255, 255, 255));
+        btnMP.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        btnMP.setForeground(new java.awt.Color(0, 51, 51));
+        btnMP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/punishment.png"))); // NOI18N
+        btnMP.setText("Managing Penalties");
+        btnMP.setColorHover(new java.awt.Color(204, 0, 51));
+        btnMP.setColorText(new java.awt.Color(0, 51, 51));
+        btnMP.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnMP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPFActionPerformed(evt);
+                btnMPActionPerformed(evt);
             }
         });
-        jPanel4.add(btnPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 200, -1));
+        jPanel4.add(btnMP, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 200, -1));
 
         btnMB.setBackground(new java.awt.Color(255, 255, 255));
         btnMB.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         btnMB.setForeground(new java.awt.Color(0, 51, 51));
-        btnMB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/24x24_bookstack_libr_3024.png"))); // NOI18N
-        btnMB.setText("    Manage Books");
+        btnMB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/knowledge.png"))); // NOI18N
+        btnMB.setText("Manage Books");
         btnMB.setColorHover(new java.awt.Color(204, 0, 51));
         btnMB.setColorText(new java.awt.Color(0, 51, 51));
         btnMB.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -175,6 +176,21 @@ public class HomePage extends javax.swing.JFrame {
             }
         });
         jPanel4.add(btnMB, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, -1, -1));
+
+        btnMP1.setBackground(new java.awt.Color(255, 255, 255));
+        btnMP1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        btnMP1.setForeground(new java.awt.Color(0, 51, 51));
+        btnMP1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/pie-chart.png"))); // NOI18N
+        btnMP1.setText("Statistic");
+        btnMP1.setColorHover(new java.awt.Color(204, 0, 51));
+        btnMP1.setColorText(new java.awt.Color(0, 51, 51));
+        btnMP1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnMP1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMP1ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnMP1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, -1, -1));
 
         jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, -1));
 
@@ -205,17 +221,17 @@ public class HomePage extends javax.swing.JFrame {
 
         jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 1300, -1));
 
-        btnMR4.setBackground(new java.awt.Color(0, 51, 51));
-        btnMR4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/icons8_Exit_26px_2.png"))); // NOI18N
-        btnMR4.setText("Logout");
-        btnMR4.setColorHover(new java.awt.Color(204, 0, 51));
-        btnMR4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnMR4.addActionListener(new java.awt.event.ActionListener() {
+        btnLOGOUT.setBackground(new java.awt.Color(0, 51, 51));
+        btnLOGOUT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/icons8_Exit_26px_2.png"))); // NOI18N
+        btnLOGOUT.setText("Logout");
+        btnLOGOUT.setColorHover(new java.awt.Color(204, 0, 51));
+        btnLOGOUT.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnLOGOUT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMR4ActionPerformed(evt);
+                btnLOGOUTActionPerformed(evt);
             }
         });
-        jPanel3.add(btnMR4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 660, 200, -1));
+        jPanel3.add(btnLOGOUT, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 660, 200, -1));
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1500, 700));
 
@@ -230,25 +246,31 @@ public class HomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMRActionPerformed
 
     private void btnBBFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBBFActionPerformed
-       BooksBorrowing BBF = new BooksBorrowing();
+        BooksBorrowing BBF = new BooksBorrowing();
         BBF.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnBBFActionPerformed
 
-    private void btnPFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPFActionPerformed
+    private void btnMPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMPActionPerformed
+        Penalty P = new Penalty();
+        P.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnMPActionPerformed
 
-    private void btnMR4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMR4ActionPerformed
+    private void btnLOGOUTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLOGOUTActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnMR4ActionPerformed
+    }//GEN-LAST:event_btnLOGOUTActionPerformed
 
     private void btnMBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMBActionPerformed
         ManageBookss MB = new ManageBookss();
         MB.setVisible(true);
         this.dispose();
-        
+
     }//GEN-LAST:event_btnMBActionPerformed
+
+    private void btnMP1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMP1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMP1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -287,10 +309,11 @@ public class HomePage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private rojerusan.RSButtonHover btnBBF;
+    private rojerusan.RSButtonHover btnLOGOUT;
     private rojerusan.RSButtonHover btnMB;
+    private rojerusan.RSButtonHover btnMP;
+    private rojerusan.RSButtonHover btnMP1;
     private rojerusan.RSButtonHover btnMR;
-    private rojerusan.RSButtonHover btnMR4;
-    private rojerusan.RSButtonHover btnPF;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

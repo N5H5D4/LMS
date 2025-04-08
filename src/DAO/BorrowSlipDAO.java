@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import jframe.DBConnection;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -272,7 +274,6 @@ public class BorrowSlipDAO {
             pst.setInt(1, slipId);
             ResultSet rs = pst.executeQuery();
 
-            
             while (rs.next()) {
                 Map<String, Object> row = new HashMap<>();
                 row.put("isbn", rs.getString("isbn"));
@@ -280,7 +281,6 @@ public class BorrowSlipDAO {
                 row.put("status", rs.getString("status"));
                 result.add(row);
 
-                
                 //System.out.println("Row: " + row);
             }
         } catch (SQLException e) {
@@ -328,20 +328,6 @@ public class BorrowSlipDAO {
         }
     }
 
-    public static BigDecimal getBookPriceByISBN(String isbn) {
-        String sql = "SELECT price FROM books WHERE isbn = ?";
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, isbn);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getBigDecimal("price");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return BigDecimal.ZERO;
-    }
-
     public static int getReaderIdBySlip(int slipId) {
         String sql = "SELECT reader_id FROM borrow_slips WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -356,6 +342,7 @@ public class BorrowSlipDAO {
         return -1;
     }
 
+    // Chèn bản ghi phạt vào bảng penalties
     public static void insertPenalty(int readerId, int borrowId, BigDecimal amount, String reason) {
         String sql = "INSERT INTO penalties (reader_id, borrow_id, amount, reason) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -369,4 +356,114 @@ public class BorrowSlipDAO {
         }
     }
 
+    // Xử lý phạt khi cập nhật trạng thái sách hoặc ngày trả
+    public static void processPenalties(int borrowId, Date returnDate) {
+        try (Connection conn = DBConnection.getConnection()) {
+            // Lấy thông tin phiếu mượn
+            String slipSql = "SELECT reader_id, due_date FROM borrow_slips WHERE id = ?";
+            PreparedStatement slipStmt = conn.prepareStatement(slipSql);
+            slipStmt.setInt(1, borrowId);
+            ResultSet slipRs = slipStmt.executeQuery();
+
+            if (!slipRs.next()) {
+                throw new SQLException("Borrow slip not found!");
+            }
+            int readerId = slipRs.getInt("reader_id");
+            Date dueDate = slipRs.getDate("due_date");
+
+            // Tính phạt quá hạn (nếu có returnDate)
+            if (returnDate != null) {
+                long overdueDays = calculateOverdueDays(dueDate, returnDate);
+                if (overdueDays > 0) {
+                    BigDecimal fineAmount = BigDecimal.valueOf(overdueDays * 5000); // 5.000 đồng/ngày
+                    String reason = "Overdue " + overdueDays + " days";
+                    insertPenalty(readerId, borrowId, fineAmount, reason);
+                }
+            }
+
+            // Kiểm tra sách bị mất
+            String detailsSql = "SELECT isbn, status FROM borrow_details WHERE borrow_id = ?";
+            PreparedStatement detailsStmt = conn.prepareStatement(detailsSql);
+            detailsStmt.setInt(1, borrowId);
+            ResultSet detailsRs = detailsStmt.executeQuery();
+
+            while (detailsRs.next()) {
+                String isbn = detailsRs.getString("isbn");
+                String status = detailsRs.getString("status");
+
+                if ("Lost".equals(status)) {
+                    BigDecimal price = getBookPriceByISBN(isbn);
+                    BigDecimal priceInVND = price.multiply(BigDecimal.valueOf(10000));
+                    BigDecimal fineAmount = priceInVND.multiply(BigDecimal.valueOf(2)); // 200% giá sách
+                    String reason = "Lost book: " + isbn;
+                    insertPenalty(readerId, borrowId, fineAmount, reason);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Tính số ngày quá hạn
+    private static long calculateOverdueDays(Date dueDate, Date returnDate) {
+        LocalDate due = dueDate.toLocalDate();       // java.sql.Date
+        LocalDate returned = returnDate.toLocalDate();
+        long days = ChronoUnit.DAYS.between(due, returned);
+        return Math.max(days, 0); // Nếu trả sớm, không phạt
+    }
+
+    // Lấy giá sách theo ISBN
+    public static BigDecimal getBookPriceByISBN(String isbn) {
+        String sql = "SELECT price FROM books WHERE isbn = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, isbn);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getBigDecimal("price");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return BigDecimal.ZERO; // Mặc định nếu không tìm thấy
+    }
+// Lấy thông tin phiếu mượn theo ID
+
+    public static Map<String, Object> getBorrowSlipById(int slipId) {
+        String sql = "SELECT reader_id, borrow_date, due_date, return_date FROM borrow_slips WHERE id = ?";
+        Map<String, Object> slip = new HashMap<>();
+
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, slipId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                slip.put("reader_id", rs.getInt("reader_id"));
+
+                // Chuyển java.sql.Date sang java.util.Date
+                java.sql.Date borrowDateSql = rs.getDate("borrow_date");
+                if (borrowDateSql != null) {
+                    slip.put("borrow_date", new Date(borrowDateSql.getTime()));
+                }
+
+                java.sql.Date dueDateSql = rs.getDate("due_date");
+                if (dueDateSql != null) {
+                    slip.put("due_date", new Date(dueDateSql.getTime()));
+                }
+
+                java.sql.Date returnDateSql = rs.getDate("return_date");
+                if (returnDateSql != null) {
+                    slip.put("return_date", new Date(returnDateSql.getTime()));
+                } else {
+                    slip.put("return_date", null); // Giữ null nếu không có ngày trả
+                }
+            } else {
+                return null; // Trả về null nếu không tìm thấy phiếu mượn
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null; // Trả về null nếu có lỗi
+        }
+
+        return slip;
+    }
 }

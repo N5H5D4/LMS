@@ -470,7 +470,7 @@ public class ManageBookss extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ISBN", "Title", "Author", "Publisher", "Published year ", "Category", "Price", "Quantity"
+                "ISBN", "Title", "Author", "Publisher", "Published year ", "Category", "Price/10000", "Quantity"
             }
         ));
         tblBooks1.setGridColor(new java.awt.Color(0, 51, 51));

@@ -318,7 +318,7 @@
                     <Column editable="true" title="Publisher" type="java.lang.Object"/>
                     <Column editable="true" title="Published year " type="java.lang.Object"/>
                     <Column editable="true" title="Category" type="java.lang.Object"/>
-                    <Column editable="true" title="Price" type="java.lang.Object"/>
+                    <Column editable="true" title="Price/10000" type="java.lang.Object"/>
                     <Column editable="true" title="Quantity" type="java.lang.Object"/>
                   </Table>
                 </Property>
