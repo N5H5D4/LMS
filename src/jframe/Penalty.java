@@ -525,7 +525,7 @@ public class Penalty extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(102, 153, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 3, new java.awt.Color(255, 255, 255)));
-        jPanel6.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel6.setLayout(new java.awt.GridLayout());
 
         btnPenalties.setBackground(new java.awt.Color(102, 153, 255));
         btnPenalties.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 3, 3, new java.awt.Color(255, 255, 255)));

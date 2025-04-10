@@ -4,6 +4,11 @@
  */
 package jframe;
 
+import java.awt.*;
+import java.awt.event.*;
+import java.text.NumberFormat;
+import DAO.*;
+
 /**
  *
  * @author HS
@@ -15,6 +20,41 @@ public class HomePage extends javax.swing.JFrame {
      */
     public HomePage() {
         initComponents();
+        updateTotalBooks();
+        updateTotalReaders();
+        updateTotalTitles();
+        updateTotalReadersBorrowingBooks();
+        updateTotalReadersOverdue();
+    }
+
+    private void updateTotalBooks() {
+        int totalBooks = StatisticsDAO.getTotalBooks();
+        NumberFormat formatter = NumberFormat.getInstance();
+        txtNoB.setText(formatter.format(totalBooks));
+    }
+
+    private void updateTotalTitles() {
+        int totalBooks = StatisticsDAO.getTotalTitles();
+        NumberFormat formatter = NumberFormat.getInstance();
+        txtNoT.setText(formatter.format(totalBooks));
+    }
+
+    private void updateTotalReaders() {
+        int totalBooks = StatisticsDAO.getTotalReaders();
+        NumberFormat formatter = NumberFormat.getInstance();
+        txtNoR.setText(formatter.format(totalBooks));
+    }
+
+    private void updateTotalReadersOverdue() {
+        int totalBooks = StatisticsDAO.getReadersOverdue();
+        NumberFormat formatter = NumberFormat.getInstance();
+        txtNoOver.setText(formatter.format(totalBooks));
+    }
+
+    private void updateTotalReadersBorrowingBooks() {
+        int totalBooks = StatisticsDAO.getReadersBorrowingBooks();
+        NumberFormat formatter = NumberFormat.getInstance();
+        txtNoBR.setText(formatter.format(totalBooks));
     }
 
     /**
@@ -43,11 +83,31 @@ public class HomePage extends javax.swing.JFrame {
         btnBBF = new rojerusan.RSButtonHover();
         btnMP = new rojerusan.RSButtonHover();
         btnMB = new rojerusan.RSButtonHover();
-        btnMP1 = new rojerusan.RSButtonHover();
+        btnStatistics = new rojerusan.RSButtonHover();
         jPanel7 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        txtNoT = new javax.swing.JTextField();
+        lblNoB = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jPanel12 = new javax.swing.JPanel();
+        lblNoB1 = new javax.swing.JLabel();
+        txtNoB = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        lblNoR = new javax.swing.JLabel();
+        txtNoR = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jPanel14 = new javax.swing.JPanel();
+        lblNoR1 = new javax.swing.JLabel();
+        txtNoOver = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        jPanel15 = new javax.swing.JPanel();
+        lblNoR2 = new javax.swing.JLabel();
+        txtNoBR = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
         btnLOGOUT = new rojerusan.RSButtonHover();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -77,7 +137,7 @@ public class HomePage extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel13.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel13.setBackground(new java.awt.Color(0, 51, 51));
         jPanel13.setBorder(javax.swing.BorderFactory.createMatteBorder(4, 0, 0, 0, new java.awt.Color(255, 255, 255)));
         jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -91,13 +151,13 @@ public class HomePage extends javax.swing.JFrame {
 
         jPanel4.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, -1));
 
-        jPanel5.setBackground(new java.awt.Color(0, 51, 51));
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("DASHBOARD");
-        jPanel5.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 140, 39));
+        jPanel5.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 180, 39));
 
         jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 51, 200, -1));
 
@@ -121,7 +181,7 @@ public class HomePage extends javax.swing.JFrame {
         btnMR.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         btnMR.setForeground(new java.awt.Color(0, 51, 51));
         btnMR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/book-reader.png"))); // NOI18N
-        btnMR.setText("Manage  Readers");
+        btnMR.setText("   Manage  Readers");
         btnMR.setColorHover(new java.awt.Color(204, 0, 51));
         btnMR.setColorText(new java.awt.Color(0, 51, 51));
         btnMR.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -136,7 +196,7 @@ public class HomePage extends javax.swing.JFrame {
         btnBBF.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         btnBBF.setForeground(new java.awt.Color(0, 51, 51));
         btnBBF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/online-survey.png"))); // NOI18N
-        btnBBF.setText("Managing Borrow Slips");
+        btnBBF.setText("   Manage Borrow Slips");
         btnBBF.setColorHover(new java.awt.Color(204, 0, 51));
         btnBBF.setColorText(new java.awt.Color(0, 51, 51));
         btnBBF.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -151,7 +211,7 @@ public class HomePage extends javax.swing.JFrame {
         btnMP.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         btnMP.setForeground(new java.awt.Color(0, 51, 51));
         btnMP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/punishment.png"))); // NOI18N
-        btnMP.setText("Managing Penalties");
+        btnMP.setText(" Manage Penalties");
         btnMP.setColorHover(new java.awt.Color(204, 0, 51));
         btnMP.setColorText(new java.awt.Color(0, 51, 51));
         btnMP.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -166,7 +226,8 @@ public class HomePage extends javax.swing.JFrame {
         btnMB.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         btnMB.setForeground(new java.awt.Color(0, 51, 51));
         btnMB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/knowledge.png"))); // NOI18N
-        btnMB.setText("Manage Books");
+        btnMB.setText("       Manage Books");
+        btnMB.setToolTipText("");
         btnMB.setColorHover(new java.awt.Color(204, 0, 51));
         btnMB.setColorText(new java.awt.Color(0, 51, 51));
         btnMB.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -177,47 +238,167 @@ public class HomePage extends javax.swing.JFrame {
         });
         jPanel4.add(btnMB, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, -1, -1));
 
-        btnMP1.setBackground(new java.awt.Color(255, 255, 255));
-        btnMP1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        btnMP1.setForeground(new java.awt.Color(0, 51, 51));
-        btnMP1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/pie-chart.png"))); // NOI18N
-        btnMP1.setText("Statistic");
-        btnMP1.setColorHover(new java.awt.Color(204, 0, 51));
-        btnMP1.setColorText(new java.awt.Color(0, 51, 51));
-        btnMP1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnMP1.addActionListener(new java.awt.event.ActionListener() {
+        btnStatistics.setBackground(new java.awt.Color(255, 255, 255));
+        btnStatistics.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        btnStatistics.setForeground(new java.awt.Color(0, 51, 51));
+        btnStatistics.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/pie-chart.png"))); // NOI18N
+        btnStatistics.setText("         View Statistic");
+        btnStatistics.setColorHover(new java.awt.Color(204, 0, 51));
+        btnStatistics.setColorText(new java.awt.Color(0, 51, 51));
+        btnStatistics.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnStatistics.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMP1ActionPerformed(evt);
+                btnStatisticsActionPerformed(evt);
             }
         });
-        jPanel4.add(btnMP1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, -1, -1));
+        jPanel4.add(btnStatistics, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, -1, -1));
 
         jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, -1));
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel7.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 700));
+        jPanel9.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 0, new java.awt.Color(255, 255, 255)));
+        jPanel9.setOpaque(false);
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel9.setBackground(new java.awt.Color(0, 51, 51));
+        jPanel10.setBackground(new java.awt.Color(0, 51, 51));
+        jPanel10.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        txtNoT.setEditable(false);
+        txtNoT.setBackground(new java.awt.Color(0, 51, 51));
+        txtNoT.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
+        txtNoT.setForeground(new java.awt.Color(255, 255, 255));
+        txtNoT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNoT.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        jPanel10.add(txtNoT, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 150, -1));
 
-        jPanel7.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 7, 3, 700));
+        lblNoB.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblNoB.setForeground(new java.awt.Color(255, 255, 255));
+        lblNoB.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNoB.setText("Number of Titles");
+        jPanel10.add(lblNoB, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 5, 240, 30));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/book-stack2.png"))); // NOI18N
+        jPanel10.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
+
+        jPanel9.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 240, 120));
+
+        jPanel12.setBackground(new java.awt.Color(0, 51, 51));
+        jPanel12.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblNoB1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblNoB1.setForeground(new java.awt.Color(255, 255, 255));
+        lblNoB1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNoB1.setText("Total Books in Library");
+        jPanel12.add(lblNoB1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 240, -1));
+
+        txtNoB.setEditable(false);
+        txtNoB.setBackground(new java.awt.Color(0, 51, 51));
+        txtNoB.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
+        txtNoB.setForeground(new java.awt.Color(255, 255, 255));
+        txtNoB.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNoB.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txtNoB.setOpaque(true);
+        jPanel12.add(txtNoB, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 150, -1));
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/books-rack.png"))); // NOI18N
+        jPanel12.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
+
+        jPanel9.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 240, 120));
+
+        jPanel11.setBackground(new java.awt.Color(0, 51, 51));
+        jPanel11.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblNoR.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblNoR.setForeground(new java.awt.Color(255, 255, 255));
+        lblNoR.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNoR.setText("Total Readers in Library");
+        jPanel11.add(lblNoR, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 10, 230, -1));
+
+        txtNoR.setEditable(false);
+        txtNoR.setBackground(new java.awt.Color(0, 51, 51));
+        txtNoR.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
+        txtNoR.setForeground(new java.awt.Color(255, 255, 255));
+        txtNoR.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNoR.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txtNoR.setOpaque(true);
+        jPanel11.add(txtNoR, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 150, -1));
+
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/reading4.png"))); // NOI18N
+        jPanel11.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 60, -1));
+
+        jPanel9.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(367, 30, 240, 120));
+
+        jPanel14.setBackground(new java.awt.Color(0, 51, 51));
+        jPanel14.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        jPanel14.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblNoR1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblNoR1.setForeground(new java.awt.Color(255, 255, 255));
+        lblNoR1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNoR1.setText("Total Readers Overdue");
+        jPanel14.add(lblNoR1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 10, 240, -1));
+
+        txtNoOver.setEditable(false);
+        txtNoOver.setBackground(new java.awt.Color(0, 51, 51));
+        txtNoOver.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
+        txtNoOver.setForeground(new java.awt.Color(255, 255, 255));
+        txtNoOver.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNoOver.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txtNoOver.setOpaque(true);
+        txtNoOver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNoOverActionPerformed(evt);
+            }
+        });
+        jPanel14.add(txtNoOver, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 150, -1));
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/overdue.png"))); // NOI18N
+        jPanel14.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 40, 70, -1));
+
+        jPanel9.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 30, 240, 120));
+
+        jPanel15.setBackground(new java.awt.Color(0, 51, 51));
+        jPanel15.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblNoR2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        lblNoR2.setForeground(new java.awt.Color(255, 255, 255));
+        lblNoR2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNoR2.setText("Total Readers Borrowing Books");
+        jPanel15.add(lblNoR2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 10, 240, -1));
+
+        txtNoBR.setEditable(false);
+        txtNoBR.setBackground(new java.awt.Color(0, 51, 51));
+        txtNoBR.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
+        txtNoBR.setForeground(new java.awt.Color(255, 255, 255));
+        txtNoBR.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNoBR.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txtNoBR.setOpaque(true);
+        txtNoBR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNoBRActionPerformed(evt);
+            }
+        });
+        jPanel15.add(txtNoBR, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 150, -1));
+
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/borrow.png"))); // NOI18N
+        jPanel15.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 40, 70, -1));
+
+        jPanel9.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 30, 240, 120));
+
+        jPanel7.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 320));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/library2.png"))); // NOI18N
         jLabel3.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 0, new java.awt.Color(255, 255, 255)));
-        jPanel7.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1, -1, 700));
+        jPanel7.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1, 1300, 700));
+
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel7.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 700));
 
         jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 1300, -1));
 
@@ -258,7 +439,7 @@ public class HomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMPActionPerformed
 
     private void btnLOGOUTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLOGOUTActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnLOGOUTActionPerformed
 
     private void btnMBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMBActionPerformed
@@ -268,9 +449,19 @@ public class HomePage extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnMBActionPerformed
 
-    private void btnMP1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMP1ActionPerformed
+    private void btnStatisticsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStatisticsActionPerformed
+        Statistics S = new Statistics();
+        S.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnStatisticsActionPerformed
+
+    private void txtNoOverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoOverActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnMP1ActionPerformed
+    }//GEN-LAST:event_txtNoOverActionPerformed
+
+    private void txtNoBRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoBRActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNoBRActionPerformed
 
     /**
      * @param args the command line arguments
@@ -312,17 +503,27 @@ public class HomePage extends javax.swing.JFrame {
     private rojerusan.RSButtonHover btnLOGOUT;
     private rojerusan.RSButtonHover btnMB;
     private rojerusan.RSButtonHover btnMP;
-    private rojerusan.RSButtonHover btnMP1;
     private rojerusan.RSButtonHover btnMR;
+    private rojerusan.RSButtonHover btnStatistics;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -331,5 +532,15 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JLabel lblNoB;
+    private javax.swing.JLabel lblNoB1;
+    private javax.swing.JLabel lblNoR;
+    private javax.swing.JLabel lblNoR1;
+    private javax.swing.JLabel lblNoR2;
+    private javax.swing.JTextField txtNoB;
+    private javax.swing.JTextField txtNoBR;
+    private javax.swing.JTextField txtNoOver;
+    private javax.swing.JTextField txtNoR;
+    private javax.swing.JTextField txtNoT;
     // End of variables declaration//GEN-END:variables
 }
