@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
 
 public class BorrowSlipDAO {
 
@@ -46,7 +47,7 @@ public class BorrowSlipDAO {
     public static boolean saveBorrowDetail(int borrowId, String isbn) {
         boolean success = false;
         try (Connection conn = DBConnection.getConnection()) {
-            String sql = "INSERT INTO borrow_details (borrow_id, isbn) VALUES (?, ?)";
+            String sql = "INSERT INTO borrow_details (borrow_id, isbn, status) VALUES (?, ?, 'Borrowed')";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, borrowId);
             stmt.setString(2, isbn);
@@ -55,6 +56,7 @@ public class BorrowSlipDAO {
             success = affectedRows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error saving borrowed details: " + e.getMessage());
         }
         return success;
     }
@@ -466,4 +468,124 @@ public class BorrowSlipDAO {
 
         return slip;
     }
+
+    public static List<Map<String, String>> getBooksForBorrowSlip(int borrowId, String keyword, String searchType) {
+        List<Map<String, String>> books = new ArrayList<>();
+        String query = "SELECT b.isbn, b.title, bd.status "
+                + "FROM borrow_details bd "
+                + "JOIN books b ON bd.isbn = b.isbn "
+                + "WHERE bd.borrow_id = ?";
+
+        if (!keyword.isEmpty() && (searchType.equals("ISBN") || searchType.equals("Title") || searchType.equals("All"))) {
+            if (searchType.equals("ISBN")) {
+                query += " AND b.isbn LIKE ?";
+            } else if (searchType.equals("Title")) {
+                query += " AND b.title LIKE ?";
+            } else {
+                query += " AND (b.isbn LIKE ? OR b.title LIKE ?)";
+            }
+        }
+
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setInt(1, borrowId);
+            if (!keyword.isEmpty() && (searchType.equals("ISBN") || searchType.equals("Title") || searchType.equals("All"))) {
+                if (searchType.equals("All")) {
+                    pst.setString(2, "%" + keyword + "%");
+                    pst.setString(3, "%" + keyword + "%");
+                } else {
+                    pst.setString(2, "%" + keyword + "%");
+                }
+            }
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Map<String, String> book = new HashMap<>();
+                book.put("isbn", rs.getString("isbn"));
+                book.put("title", rs.getString("title"));
+                book.put("status", rs.getString("status"));
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
+    }
+
+    public static List<Map<String, Object>> searchBorrowSlips(String keyword, String yearFilter, String monthFilter, String searchType) {
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        String query = "SELECT bs.id AS borrow_id, r.id AS readerID, r.name AS readerName, "
+                + "bs.borrow_date, bs.due_date, bs.return_date "
+                + "FROM borrow_slips bs "
+                + "JOIN readers r ON bs.reader_id = r.id WHERE 1=1";
+
+        List<Object> params = new ArrayList<>();
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            switch (searchType) {
+                case "ReaderID":
+                    query += " AND CAST(r.id AS CHAR) LIKE ?";
+                    params.add("%" + keyword + "%");
+                    break;
+                case "Reader Name":
+                    query += " AND r.name LIKE ?";
+                    params.add("%" + keyword + "%");
+                    break;
+                case "All":
+                    query += " AND (CAST(r.id AS CHAR) LIKE ? OR r.name LIKE ?)";
+                    params.add("%" + keyword + "%");
+                    params.add("%" + keyword + "%");
+                    break;
+            }
+        }
+
+        if (!"All years".equals(yearFilter)) {
+            query += " AND YEAR(bs.borrow_date) = ?";
+            params.add(Integer.parseInt(yearFilter));
+        }
+
+        if (!"All months".equals(monthFilter)) {
+            query += " AND MONTH(bs.borrow_date) = ?";
+            params.add(Integer.parseInt(monthFilter));
+        }
+
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(query)) {
+            for (int i = 0; i < params.size(); i++) {
+                Object param = params.get(i);
+                if (param instanceof String) {
+                    pst.setString(i + 1, (String) param);
+                } else if (param instanceof Integer) {
+                    pst.setInt(i + 1, (Integer) param);
+                }
+            }
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                int borrowId = rs.getInt("borrow_id");
+                List<Map<String, String>> books = getBooksForBorrowSlip(borrowId, keyword, searchType);
+
+                // Nếu lọc theo ISBN/Title/All mà không có sách khớp thì bỏ qua
+                if (!keyword.isEmpty() && (searchType.equals("ISBN") || searchType.equals("Title") || searchType.equals("All")) && books.isEmpty()) {
+                    continue;
+                }
+
+                Map<String, Object> row = new HashMap<>();
+                row.put("borrow_id", borrowId);
+                row.put("reader_id", rs.getInt("readerID"));
+                row.put("reader_name", rs.getString("readerName"));
+                row.put("borrow_date", rs.getString("borrow_date"));
+                row.put("due_date", rs.getString("due_date"));
+                row.put("return_date", rs.getString("return_date") != null ? rs.getString("return_date") : "");
+                row.put("books", books);
+
+                result.add(row);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
 }

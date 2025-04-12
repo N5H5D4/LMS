@@ -140,11 +140,11 @@ public class Statistics extends javax.swing.JFrame {
 
         BooksbyGenrePanel.add(mainPanel, BorderLayout.CENTER);
 
-        // Panel chứa các nút
+        // Panel chứa các btn
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         southPanel.setOpaque(false);
 
-        // Nút Refresh
+        //btn Refresh
         JButton btnRefresh = new JButton("Refresh");
         btnRefresh.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnRefresh.setForeground(Color.BLACK);
@@ -153,7 +153,7 @@ public class Statistics extends javax.swing.JFrame {
         btnRefresh.addActionListener(e -> updateBooksByGenre());
         southPanel.add(btnRefresh);
 
-        // Nút Switch Mode
+        //btn Switch Mode
         JButton btnSwitchMode = new JButton("Switch to Titles");
         btnSwitchMode.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnSwitchMode.setForeground(Color.BLACK);
@@ -234,13 +234,13 @@ public class Statistics extends javax.swing.JFrame {
         // Sử dụng layout BorderLayout cho GenderPanel
         GenderPanel.setLayout(new BorderLayout(10, 10));
 
-        // Tiêu đề
+        //
         JLabel lblTitle = new JLabel("Readers by Gender", JLabel.CENTER);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 24));
         lblTitle.setForeground(Color.WHITE);
         GenderPanel.add(lblTitle, BorderLayout.NORTH);
 
-        // Panel chính chia đôi với GridBagLayout
+        // 
         JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setOpaque(false);
 

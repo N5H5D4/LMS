@@ -21,6 +21,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import static jframe.DBConnection.con;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author HS
@@ -467,10 +473,10 @@ public class ManageBookss extends javax.swing.JFrame {
         tblBooks1.setForeground(new java.awt.Color(0, 0, 0));
         tblBooks1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ISBN", "Title", "Author", "Publisher", "Published year ", "Category", "Price/10000", "Quantity"
+                "Image", "ISBN", "Title", "Author", "Publisher", "Published year ", "Category", "Price/10000", "Quantity"
             }
         ));
         tblBooks1.setGridColor(new java.awt.Color(0, 51, 51));
