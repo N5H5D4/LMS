@@ -279,8 +279,8 @@ public class ManageBookss extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblBooks = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
-        txtSearch = new app.bolivia.swing.JCTextField();
         rSButtonHover1 = new rojerusan.RSButtonHover();
+        txtSearch = new app.bolivia.swing.JCTextField();
         cmbYear = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         cmbCriteria = new javax.swing.JComboBox<>();
@@ -348,8 +348,9 @@ public class ManageBookss extends javax.swing.JFrame {
         jLabel8.setBackground(new java.awt.Color(0, 0, 0));
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("ADD BOOKS");
-        jPanel9.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 30, -1, -1));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("ADD BOOKS TO LIBRARY");
+        jPanel9.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(322, 30, 640, -1));
 
         jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/digital-library.png"))); // NOI18N
         jPanel9.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 170, 140));
@@ -437,51 +438,50 @@ public class ManageBookss extends javax.swing.JFrame {
         txtTitle.setBackground(new java.awt.Color(0, 51, 51));
         txtTitle.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtTitle.setForeground(new java.awt.Color(255, 255, 255));
-        txtTitle.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTitle.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtTitle.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(102, 153, 255)));
         txtTitle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTitleActionPerformed(evt);
             }
         });
-        jPanel1.add(txtTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 110, 170, 40));
+        jPanel1.add(txtTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 110, 210, 40));
 
         txtAuthor.setBackground(new java.awt.Color(0, 51, 51));
         txtAuthor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtAuthor.setForeground(new java.awt.Color(255, 255, 255));
-        txtAuthor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtAuthor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtAuthor.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(102, 153, 255)));
         txtAuthor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtAuthorActionPerformed(evt);
             }
         });
-        jPanel1.add(txtAuthor, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 110, 170, 40));
+        jPanel1.add(txtAuthor, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 110, 170, 40));
 
         txtISBN.setBackground(new java.awt.Color(0, 51, 51));
         txtISBN.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtISBN.setForeground(new java.awt.Color(255, 255, 255));
-        txtISBN.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtISBN.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtISBN.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(102, 153, 255)));
-        jPanel1.add(txtISBN, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, 170, 40));
+        jPanel1.add(txtISBN, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, 210, 40));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/isbn2_32x32.png"))); // NOI18N
-        jLabel12.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, 40, 40));
 
         txtPublisher.setBackground(new java.awt.Color(0, 51, 51));
         txtPublisher.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtPublisher.setForeground(new java.awt.Color(255, 255, 255));
-        txtPublisher.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtPublisher.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtPublisher.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(102, 153, 255)));
         txtPublisher.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPublisherActionPerformed(evt);
             }
         });
-        jPanel1.add(txtPublisher, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 170, 40));
+        jPanel1.add(txtPublisher, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 20, 170, 40));
 
         txtQuantity.setBackground(new java.awt.Color(0, 51, 51));
         txtQuantity.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -493,7 +493,7 @@ public class ManageBookss extends javax.swing.JFrame {
                 txtQuantityActionPerformed(evt);
             }
         });
-        jPanel1.add(txtQuantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 30, 170, 40));
+        jPanel1.add(txtQuantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 30, 140, 40));
 
         txtPrice.setBackground(new java.awt.Color(0, 51, 51));
         txtPrice.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -505,7 +505,7 @@ public class ManageBookss extends javax.swing.JFrame {
                 txtPriceActionPerformed(evt);
             }
         });
-        jPanel1.add(txtPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 110, 170, 40));
+        jPanel1.add(txtPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 110, 140, 40));
 
         txtPublishedYear.setBackground(new java.awt.Color(0, 51, 51));
         txtPublishedYear.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -517,11 +517,13 @@ public class ManageBookss extends javax.swing.JFrame {
                 txtPublishedYearActionPerformed(evt);
             }
         });
-        jPanel1.add(txtPublishedYear, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 200, 170, 40));
+        jPanel1.add(txtPublishedYear, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 200, 170, 40));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        RoundedPanel jPanel6 = new RoundedPanel(30);
+        jPanel6.setBackground(new Color(255, 255, 255));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 10, 3, 240));
+        jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 10, 3, 240));
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
@@ -543,57 +545,52 @@ public class ManageBookss extends javax.swing.JFrame {
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/tag.png"))); // NOI18N
-        jLabel13.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/name2.png"))); // NOI18N
         jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, 40, 40));
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/writer.png"))); // NOI18N
-        jLabel14.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 110, 40, 40));
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 110, 40, 40));
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/publishing-house.png"))); // NOI18N
-        jLabel15.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 20, 40, 40));
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 40, 40));
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/year.png"))); // NOI18N
-        jLabel16.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 200, 40, 40));
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 200, 40, 40));
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/category.png"))); // NOI18N
         jLabel17.setText("Category:");
-        jLabel17.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 200, 40, 40));
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/price-tag.png"))); // NOI18N
-        jLabel18.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 110, 40, 40));
+        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 110, 40, 40));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/bookshelves.png"))); // NOI18N
-        jLabel19.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 30, 40, 40));
+        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 30, 40, 40));
 
         txtCategory.setBackground(new java.awt.Color(0, 51, 51));
         txtCategory.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtCategory.setForeground(new java.awt.Color(255, 255, 255));
         txtCategory.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCategory.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(102, 153, 255)));
-        jPanel1.add(txtCategory, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 200, 170, 40));
+        jPanel1.add(txtCategory, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 200, 210, 40));
 
         jPanel12.setBackground(new java.awt.Color(255, 255, 255));
+        RoundedPanel jPanel12 = new RoundedPanel(30);
+        jPanel12.setBackground(new Color(255, 255, 255));
         jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 10, 3, 240));
+        jPanel1.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 10, 3, 240));
 
         searchAreaPanel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 10, 900, 260));
 
@@ -629,6 +626,17 @@ public class ManageBookss extends javax.swing.JFrame {
         jPanel8.setBackground(new Color(0, 51, 51));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        rSButtonHover1.setBackground(new java.awt.Color(0, 51, 51));
+        rSButtonHover1.setBorder(null);
+        rSButtonHover1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/search.png"))); // NOI18N
+        rSButtonHover1.setColorHover(new java.awt.Color(51, 255, 0));
+        rSButtonHover1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSButtonHover1ActionPerformed(evt);
+            }
+        });
+        jPanel8.add(rSButtonHover1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, 40));
+
         txtSearch.setBackground(new java.awt.Color(0, 51, 51));
         txtSearch.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         txtSearch.setForeground(new java.awt.Color(255, 255, 255));
@@ -644,17 +652,6 @@ public class ManageBookss extends javax.swing.JFrame {
             }
         });
         jPanel8.add(txtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 310, 40));
-
-        rSButtonHover1.setBackground(new java.awt.Color(0, 51, 51));
-        rSButtonHover1.setBorder(null);
-        rSButtonHover1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/search.png"))); // NOI18N
-        rSButtonHover1.setColorHover(new java.awt.Color(51, 255, 0));
-        rSButtonHover1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rSButtonHover1ActionPerformed(evt);
-            }
-        });
-        jPanel8.add(rSButtonHover1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, 40));
 
         cmbYear.setBackground(new java.awt.Color(255, 255, 255));
         cmbYear.setForeground(new java.awt.Color(0, 0, 0));
@@ -927,6 +924,7 @@ public class ManageBookss extends javax.swing.JFrame {
 
     private void rSButtonHover1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonHover1ActionPerformed
         searchBooks();
+        clearFields();
     }//GEN-LAST:event_rSButtonHover1ActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed

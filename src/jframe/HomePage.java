@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.NumberFormat;
 import DAO.*;
+import UI_Helper.RoundedPanel;
+import javax.swing.border.MatteBorder;
 
 /**
  *
@@ -24,7 +26,8 @@ public class HomePage extends javax.swing.JFrame {
         updateTotalReaders();
         updateTotalTitles();
         updateTotalReadersBorrowingBooks();
-        updateTotalReadersOverdue();
+        updateTotalReadersOverdue();       
+
     }
 
     private void updateTotalBooks() {
@@ -87,9 +90,9 @@ public class HomePage extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
         txtNoT = new javax.swing.JTextField();
         lblNoB = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         lblNoB1 = new javax.swing.JLabel();
         txtNoB = new javax.swing.JTextField();
@@ -264,41 +267,46 @@ public class HomePage extends javax.swing.JFrame {
 
         jPanel10.setBackground(new java.awt.Color(0, 51, 51));
         jPanel10.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        RoundedPanel jPanel10 = new RoundedPanel(30);
+        jPanel10.setBackground(new Color(255, 255, 255));
         jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/book-stack2.png"))); // NOI18N
+        jPanel10.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
+
         txtNoT.setEditable(false);
-        txtNoT.setBackground(new java.awt.Color(0, 51, 51));
+        txtNoT.setBackground(new java.awt.Color(255, 255, 255));
         txtNoT.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
-        txtNoT.setForeground(new java.awt.Color(255, 255, 255));
+        txtNoT.setForeground(new java.awt.Color(0, 51, 51));
         txtNoT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNoT.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         jPanel10.add(txtNoT, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 150, -1));
 
         lblNoB.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblNoB.setForeground(new java.awt.Color(255, 255, 255));
+        lblNoB.setForeground(new java.awt.Color(0, 51, 51));
         lblNoB.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNoB.setText("Number of Titles");
         jPanel10.add(lblNoB, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 5, 240, 30));
-
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/book-stack2.png"))); // NOI18N
-        jPanel10.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
 
         jPanel9.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 240, 120));
 
         jPanel12.setBackground(new java.awt.Color(0, 51, 51));
         jPanel12.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        RoundedPanel jPanel12 = new RoundedPanel(30);
+        jPanel12.setBackground(new Color(255, 255, 255));
+
         jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblNoB1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblNoB1.setForeground(new java.awt.Color(255, 255, 255));
+        lblNoB1.setForeground(new java.awt.Color(0, 51, 51));
         lblNoB1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNoB1.setText("Total Books in Library");
         jPanel12.add(lblNoB1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 240, -1));
 
         txtNoB.setEditable(false);
-        txtNoB.setBackground(new java.awt.Color(0, 51, 51));
+        txtNoB.setBackground(new java.awt.Color(255, 255, 255));
         txtNoB.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
-        txtNoB.setForeground(new java.awt.Color(255, 255, 255));
+        txtNoB.setForeground(new java.awt.Color(0, 51, 51));
         txtNoB.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNoB.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         txtNoB.setOpaque(true);
@@ -311,18 +319,21 @@ public class HomePage extends javax.swing.JFrame {
 
         jPanel11.setBackground(new java.awt.Color(0, 51, 51));
         jPanel11.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        RoundedPanel jPanel11 = new RoundedPanel(30);
+        jPanel11.setBackground(new Color(255, 255, 255));
+
         jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblNoR.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblNoR.setForeground(new java.awt.Color(255, 255, 255));
+        lblNoR.setForeground(new java.awt.Color(0, 51, 51));
         lblNoR.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNoR.setText("Total Readers in Library");
         jPanel11.add(lblNoR, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 10, 230, -1));
 
         txtNoR.setEditable(false);
-        txtNoR.setBackground(new java.awt.Color(0, 51, 51));
+        txtNoR.setBackground(new java.awt.Color(255, 255, 255));
         txtNoR.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
-        txtNoR.setForeground(new java.awt.Color(255, 255, 255));
+        txtNoR.setForeground(new java.awt.Color(0, 51, 51));
         txtNoR.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNoR.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         txtNoR.setOpaque(true);
@@ -335,18 +346,21 @@ public class HomePage extends javax.swing.JFrame {
 
         jPanel14.setBackground(new java.awt.Color(0, 51, 51));
         jPanel14.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        RoundedPanel jPanel14 = new RoundedPanel(30);
+        jPanel14.setBackground(new Color(255, 255, 255));
+
         jPanel14.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblNoR1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblNoR1.setForeground(new java.awt.Color(255, 255, 255));
+        lblNoR1.setForeground(new java.awt.Color(0, 51, 51));
         lblNoR1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNoR1.setText("Total Readers Overdue");
         jPanel14.add(lblNoR1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 10, 240, -1));
 
         txtNoOver.setEditable(false);
-        txtNoOver.setBackground(new java.awt.Color(0, 51, 51));
+        txtNoOver.setBackground(new java.awt.Color(255, 255, 255));
         txtNoOver.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
-        txtNoOver.setForeground(new java.awt.Color(255, 255, 255));
+        txtNoOver.setForeground(new java.awt.Color(0, 51, 51));
         txtNoOver.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNoOver.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         txtNoOver.setOpaque(true);
@@ -364,18 +378,21 @@ public class HomePage extends javax.swing.JFrame {
 
         jPanel15.setBackground(new java.awt.Color(0, 51, 51));
         jPanel15.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        RoundedPanel jPanel15 = new RoundedPanel(30);
+        jPanel15.setBackground(new Color(255, 255, 255));
+
         jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblNoR2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        lblNoR2.setForeground(new java.awt.Color(255, 255, 255));
+        lblNoR2.setForeground(new java.awt.Color(0, 51, 51));
         lblNoR2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNoR2.setText("Total Readers Borrowing Books");
         jPanel15.add(lblNoR2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 10, 240, -1));
 
         txtNoBR.setEditable(false);
-        txtNoBR.setBackground(new java.awt.Color(0, 51, 51));
+        txtNoBR.setBackground(new java.awt.Color(255, 255, 255));
         txtNoBR.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
-        txtNoBR.setForeground(new java.awt.Color(255, 255, 255));
+        txtNoBR.setForeground(new java.awt.Color(0, 51, 51));
         txtNoBR.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNoBR.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         txtNoBR.setOpaque(true);
@@ -497,7 +514,6 @@ public class HomePage extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private rojerusan.RSButtonHover btnBBF;
     private rojerusan.RSButtonHover btnLOGOUT;

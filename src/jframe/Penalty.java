@@ -203,7 +203,7 @@ public class Penalty extends javax.swing.JFrame {
 
         JPopupMenu popup = new JPopupMenu();
         popup.setBackground(new Color(240, 248, 255));
-        MatteBorder matteBorder = new MatteBorder(5, 5, 5, 5, new Color(102, 153, 255));
+        MatteBorder matteBorder = new MatteBorder(3, 3, 3, 3, new Color(0, 51, 51));
         popup.setBorder(matteBorder);
 
         JTable booksTable = new JTable();
@@ -426,8 +426,8 @@ public class Penalty extends javax.swing.JFrame {
         JTable innerTable = new JTable();
         innerTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         innerTable.setRowHeight(30);
-        innerTable.setGridColor(new Color(0, 51, 51));
-        innerTable.setShowGrid(true);
+        //innerTable.setGridColor(new Color(0, 51, 51));
+        //innerTable.setShowGrid(true);
 
         if (col == 3) { // Borrow list
             List<String> bookList = (List<String>) tblPenalty.getClientProperty("bookList_" + borrowId);
@@ -473,7 +473,7 @@ public class Penalty extends javax.swing.JFrame {
         scrollPane.setPreferredSize(new Dimension(400, Math.min(innerTable.getRowCount() * 30 + 30, 300)));
         popup.add(scrollPane);
 
-        MatteBorder matteBorder = new MatteBorder(5, 5, 5, 5, new Color(102, 153, 255));
+        MatteBorder matteBorder = new MatteBorder(3, 3, 3, 3, new Color(0, 51, 51));
         popup.setBorder(matteBorder);
 
         //Vị trí popup (giữa)
@@ -527,7 +527,7 @@ public class Penalty extends javax.swing.JFrame {
         setBackground(new java.awt.Color(0, 51, 51));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        SearchPanel.setBackground(new java.awt.Color(0, 51, 51));
+        SearchPanel.setBackground(new java.awt.Color(255, 255, 255));
         SearchPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         PenaltiesPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -637,16 +637,19 @@ public class Penalty extends javax.swing.JFrame {
 
         SearchPanel.add(PenaltiesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1300, 650));
 
-        jPanel6.setBackground(new java.awt.Color(102, 153, 255));
-        jPanel6.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 0, 3, new java.awt.Color(255, 255, 255)));
-        jPanel6.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel6.setBackground(new java.awt.Color(0, 51, 51));
+        jPanel6.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 3, 0, new java.awt.Color(0, 51, 51)));
+        RoundedPanel jPanel6 = new RoundedPanel(30);
+        jPanel6.setBackground(new Color(0, 51, 51));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnPenalties.setBackground(new java.awt.Color(0, 51, 51));
-        btnPenalties.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 3, 3, new java.awt.Color(255, 255, 255)));
+        btnPenalties.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 2, new java.awt.Color(255, 255, 255)));
         btnPenalties.setForeground(new java.awt.Color(0, 51, 51));
         btnPenalties.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/penalty_list.png"))); // NOI18N
         btnPenalties.setText("Penalties List");
-        btnPenalties.setColorHover(new java.awt.Color(255, 0, 51));
+        btnPenalties.setColorHover(new java.awt.Color(0, 51, 51));
+        btnPenalties.setColorTextHover(new java.awt.Color(102, 153, 255));
         btnPenalties.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnPenalties.setIconTextGap(20);
         btnPenalties.addActionListener(new java.awt.event.ActionListener() {
@@ -654,13 +657,14 @@ public class Penalty extends javax.swing.JFrame {
                 btnPenaltiesActionPerformed(evt);
             }
         });
-        jPanel6.add(btnPenalties);
+        jPanel6.add(btnPenalties, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 3, 630, 34));
 
         btnUnreturned.setBackground(new java.awt.Color(0, 51, 51));
-        btnUnreturned.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 3, 0, new java.awt.Color(255, 255, 255)));
+        btnUnreturned.setBorder(null);
         btnUnreturned.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/overdue32x32.png"))); // NOI18N
         btnUnreturned.setText("Overdue List");
-        btnUnreturned.setColorHover(new java.awt.Color(255, 0, 51));
+        btnUnreturned.setColorHover(new java.awt.Color(0, 51, 51));
+        btnUnreturned.setColorTextHover(new java.awt.Color(102, 153, 255));
         btnUnreturned.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnUnreturned.setIconTextGap(20);
         btnUnreturned.addActionListener(new java.awt.event.ActionListener() {
@@ -668,9 +672,9 @@ public class Penalty extends javax.swing.JFrame {
                 btnUnreturnedActionPerformed(evt);
             }
         });
-        jPanel6.add(btnUnreturned);
+        jPanel6.add(btnUnreturned, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 3, 630, 34));
 
-        SearchPanel.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 50));
+        SearchPanel.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1280, 40));
 
         OverduePanel.setBackground(new java.awt.Color(255, 255, 255));
         OverduePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

@@ -93,12 +93,21 @@ public class BooksBorrowing extends javax.swing.JFrame {
 
     }
 
+    private void clearFields() {
+        txtBorrowID.setText(""); 
+        txtReaderID1.setText("");
+        txtReaderName1.setText("");
+        txtBorrowedDate.setText(""); 
+        txtDueDate.setText(""); 
+        txtReturnDate.setText("");
+    }
+
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     SINGLE SLIP FORM
  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // Chức năng tìm kiếm sách theo title để đề xuất danh sách các books phù hợp
     private void initBookTitleSearch() {
-        // Khởi tạo danh sách gợi ý
+        //
         listModel = new DefaultListModel<>();
         bookList = new JList<>(listModel);
         bookList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -108,7 +117,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
         bookList.setSelectionBackground(new Color(135, 206, 250));
         bookList.setSelectionForeground(Color.BLACK);
 
-        // Tùy chỉnh hiển thị của danh sách gợi ý
+        //
         bookList.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
@@ -122,7 +131,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
             }
         });
 
-        // Tạo popup gợi ý
+        // popup gợi ý
         suggestionPopup = new JPopupMenu();
         suggestionPopup.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
         suggestionPopup.add(new JScrollPane(bookList));
@@ -187,7 +196,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
             }
         });
 
-        // --- Xử lý chọn gợi ý từ danh sách ---
+        //chọn gợi ý từ danh sách
         bookList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -219,7 +228,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
             }
         });
 
-        // --- Hiệu ứng highlight khi di chuột ---
+        // highlight
         bookList.addMouseMotionListener(new MouseMotionAdapter() {
             int lastIndex = -1;
 
@@ -261,7 +270,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
         listModel.clear();
 
         for (String[] book : results) {
-            listModel.addElement(book[1]); // Hiển thị Title
+            listModel.addElement(book[1]);
         }
 
         if (!results.isEmpty()) {
@@ -331,8 +340,8 @@ public class BooksBorrowing extends javax.swing.JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     updateBooksTable();
-                    // Hiển thị popup tại vị trí nút
-                    popupMenu.show(button, -415, button.getHeight());
+                    // Hiển thị popup tại vị trí nút (cột 7)
+                    popupMenu.show(button, -405, button.getHeight());
                 }
             });
         }
@@ -354,7 +363,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
                     });
                 }
             }
-            MatteBorder matteBorder = new MatteBorder(10, 10, 10, 10, new Color(102, 153, 255));
+            MatteBorder matteBorder = new MatteBorder(3, 3, 3, 3, new Color(0, 51, 51));
             popupMenu.setBorder(matteBorder);
 
             int rowCount = books != null ? books.size() : 0;
@@ -387,7 +396,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
             // Gán scrollPane vào popupMenu
             popupMenu.removeAll();
             popupMenu.add(scrollPane);
-            // Tự động đóng popup khi nhấn ra ngoài
+            // Đóng popup khi nhấn ra ngoài
             popupMenu.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
                 @Override
                 public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
@@ -467,8 +476,8 @@ public class BooksBorrowing extends javax.swing.JFrame {
                                 JOptionPane.showMessageDialog(BooksBorrowing.this, "Table structure is incorrect!", "Error", JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
-                            // Gán dữ liệu vào JTextField
-                            txtBorrowID.setText(getValue(model, selectedRow, 0)); // Borrow ID
+                            // 
+                            txtBorrowID.setText(getValue(model, selectedRow, 0));
                             txtReaderID1.setText(getValue(model, selectedRow, 1)); // ReaderID
                             txtReaderName1.setText(getValue(model, selectedRow, 2)); // ReaderName
                             txtBorrowedDate.setText(getValue(model, selectedRow, 3)); // Borrow Date
@@ -938,12 +947,11 @@ public class BooksBorrowing extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblMANAGE_BORROW_SLIPS = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
-        txtBorrowID = new javax.swing.JTextField();
         txtBorrowedDate = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         txtReaderName1 = new javax.swing.JTextField();
-        txtReturnDate = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
+        txtReturnDate = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
@@ -956,7 +964,9 @@ public class BooksBorrowing extends javax.swing.JFrame {
         btnDelete = new rojerusan.RSButtonHover();
         btnEdit = new rojerusan.RSButtonHover();
         jPanel25 = new javax.swing.JPanel();
+        jPanel26 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
+        txtBorrowID = new javax.swing.JTextField();
         ReturnBookPanel = new javax.swing.JPanel();
         lblAPPROVED2 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -1187,19 +1197,6 @@ public class BooksBorrowing extends javax.swing.JFrame {
         jPanel7.setBackground(new Color(0, 51, 51));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        txtBorrowID.setEditable(false);
-        txtBorrowID.setBackground(new java.awt.Color(0, 51, 51));
-        txtBorrowID.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        txtBorrowID.setForeground(new java.awt.Color(255, 255, 255));
-        txtBorrowID.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtBorrowID.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
-        txtBorrowID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBorrowIDActionPerformed(evt);
-            }
-        });
-        jPanel7.add(txtBorrowID, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 100, 30));
-
         txtBorrowedDate.setEditable(false);
         txtBorrowedDate.setBackground(new java.awt.Color(0, 51, 51));
         txtBorrowedDate.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
@@ -1233,6 +1230,10 @@ public class BooksBorrowing extends javax.swing.JFrame {
         });
         jPanel7.add(txtReaderName1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 220, 30));
 
+        jLabel16.setBackground(new java.awt.Color(0, 51, 51));
+        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/check-form_116472.png"))); // NOI18N
+        jPanel7.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, -1, -1));
+
         txtReturnDate.setEditable(false);
         txtReturnDate.setBackground(new java.awt.Color(0, 51, 51));
         txtReturnDate.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
@@ -1246,14 +1247,14 @@ public class BooksBorrowing extends javax.swing.JFrame {
         });
         jPanel7.add(txtReturnDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 110, 220, 30));
 
-        jLabel16.setBackground(new java.awt.Color(0, 51, 51));
-        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/check-form_116472.png"))); // NOI18N
-        jPanel7.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
-
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        RoundedPanel jPanel8 = new RoundedPanel(30);
+        jPanel8.setBackground(new Color(255, 255, 255));
         jPanel7.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 10, 3, 240));
 
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+        RoundedPanel jPanel10 = new RoundedPanel(30);
+        jPanel10.setBackground(new Color(255, 255, 255));
         jPanel7.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 10, 3, 240));
 
         jLabel20.setBackground(new java.awt.Color(0, 51, 51));
@@ -1338,13 +1339,36 @@ public class BooksBorrowing extends javax.swing.JFrame {
         });
         jPanel1.add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 120, -1));
 
-        jPanel7.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 10, 140, 240));
+        jPanel7.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 10, 140, 140));
 
         jPanel25.setBackground(new java.awt.Color(255, 255, 255));
+        RoundedPanel jPanel25 = new RoundedPanel(30);
+        jPanel25.setBackground(new Color(255, 255, 255));
         jPanel7.add(jPanel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 10, 3, 240));
 
-        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/reading4.png"))); // NOI18N
-        jPanel7.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, -1, -1));
+        jPanel26.setBackground(new java.awt.Color(255, 255, 255));
+        RoundedPanel jPanel26 = new RoundedPanel(30);
+        jPanel26.setBackground(new Color(255, 255, 255));
+        jPanel26.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/stick-figure.png"))); // NOI18N
+        jPanel26.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 110, -1));
+
+        jPanel7.add(jPanel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 110, 240));
+
+        txtBorrowID.setEditable(false);
+        txtBorrowID.setBackground(new java.awt.Color(0, 51, 51));
+        txtBorrowID.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        txtBorrowID.setForeground(new java.awt.Color(255, 255, 255));
+        txtBorrowID.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtBorrowID.setBorder(null);
+        txtBorrowID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBorrowIDActionPerformed(evt);
+            }
+        });
+        jPanel7.add(txtBorrowID, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 190, 30));
 
         searchAreaPanel.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 10, 900, 260));
 
@@ -2163,6 +2187,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
             if (isDeleted) {
                 JOptionPane.showMessageDialog(this, "Xóa thành công!");
                 model.removeRow(selectedRow);
+                clearFields();
             } else {
                 JOptionPane.showMessageDialog(this, "Xóa thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
@@ -2190,6 +2215,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
 
     private void rSButtonHover1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonHover1ActionPerformed
         searchBorrowInfor();
+         clearFields();
     }//GEN-LAST:event_rSButtonHover1ActionPerformed
 
     private void cmbYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbYearActionPerformed
@@ -2436,6 +2462,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;
+    private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
