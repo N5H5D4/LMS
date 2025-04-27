@@ -418,8 +418,8 @@ public class Statistics extends javax.swing.JFrame {
         jLabel1.setText("jLabel1");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 50, -1));
 
-        btnBack.setBackground(new java.awt.Color(255, 255, 255));
-        btnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/back_main_page_icon_124174.png"))); // NOI18N
+        btnBack.setBackground(new java.awt.Color(0, 51, 51));
+        btnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/undo.png"))); // NOI18N
         btnBack.setColorHover(new java.awt.Color(204, 0, 51));
         btnBack.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnBack.addActionListener(new java.awt.event.ActionListener() {
@@ -427,7 +427,7 @@ public class Statistics extends javax.swing.JFrame {
                 btnBackActionPerformed(evt);
             }
         });
-        jPanel2.add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(1400, 0, 100, 50));
+        jPanel2.add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(1440, 0, 60, 50));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 

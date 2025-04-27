@@ -425,6 +425,8 @@ public class ManageReaders extends javax.swing.JFrame {
 
         jPanel9.setBackground(new java.awt.Color(0, 51, 51));
         jPanel9.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(0, 51, 51)));
+        RoundedPanel jPanel9 = new RoundedPanel(30);
+        jPanel9.setBackground(new Color(0, 51, 51));
         jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel8.setBackground(new java.awt.Color(255, 255, 255));

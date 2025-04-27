@@ -26,7 +26,7 @@ public class HomePage extends javax.swing.JFrame {
         updateTotalReaders();
         updateTotalTitles();
         updateTotalReadersBorrowingBooks();
-        updateTotalReadersOverdue();       
+        updateTotalReadersOverdue();
 
     }
 
@@ -456,7 +456,9 @@ public class HomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMPActionPerformed
 
     private void btnLOGOUTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLOGOUTActionPerformed
-
+        SignUpPage su = new SignUpPage();
+        su.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnLOGOUTActionPerformed
 
     private void btnMBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMBActionPerformed

@@ -28,11 +28,11 @@ import javax.swing.ScrollPaneConstants;
 import java.awt.Dimension;
 import static jframe.DBConnection.con;
 import javax.swing.border.MatteBorder;
-import java.io.File;
+/*import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
+import javax.swing.JFileChooser;*/
 import javax.swing.SwingUtilities;
 
 import javax.swing.JScrollPane;
