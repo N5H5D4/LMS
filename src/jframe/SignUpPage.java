@@ -26,6 +26,8 @@ public class SignUpPage extends javax.swing.JFrame {
      */
     public SignUpPage() {
         initComponents();
+        this.setLocationRelativeTo(null);
+
     }
 
     public void insertSignupDetails() {
@@ -107,7 +109,7 @@ public class SignUpPage extends javax.swing.JFrame {
         return true;
     }
 
-    //verify creds
+    //verify 
     public void login() {
         String name = txt_UserName.getText();
         String pass = txt_Pass.getText();
@@ -128,7 +130,7 @@ public class SignUpPage extends javax.swing.JFrame {
                 this.dispose();
 
             } else {
-                JOptionPane.showMessageDialog(this, "Incorrect username or password");
+                JOptionPane.showMessageDialog(this, "Incorrect username/password or account does not exist");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,18 +141,16 @@ public class SignUpPage extends javax.swing.JFrame {
     //check duplicate users
     public boolean checkDuplicateUser() {
         String name = txt_UserName.getText();
-        String pass = txt_Pass.getText();
-        String email = txt_Email.getText();
+      
         boolean isExist = false;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DBConnection.getConnection();
 
-            PreparedStatement pst = con.prepareStatement("select * from librarians where name = ? and password = ? and email = ?");
+            PreparedStatement pst = con.prepareStatement("select * from librarians where name = ?");
             pst.setString(1, name);
-            pst.setString(2, pass);
-            pst.setString(3, email);
+
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 isExist = true;
@@ -347,7 +347,7 @@ public class SignUpPage extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("WELLCOME TO LIBARY MANAGEMENT APPLICATION!");
+        jLabel2.setText("WELLCOME TO LIBRARY MANAGEMENT APPLICATION!");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 740, -1));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/woman-librarian-concept-free-vector-removebg-preview.png"))); // NOI18N

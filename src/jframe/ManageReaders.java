@@ -25,6 +25,11 @@ import javax.swing.table.*;
 import javax.swing.JScrollBar;
 import javax.swing.ScrollPaneConstants;
 import java.awt.Dimension;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import DAO.*;
 import UI_Helper.RoundedPanel;
 import java.awt.Component;
@@ -51,6 +56,23 @@ public class ManageReaders extends javax.swing.JFrame {
         styleTable(tblReaders1);
         jScrollPane3.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
+        //Tự động điền ccd cà ced, hõ trợ thêm reader
+        DefaultTableModel model = (DefaultTableModel) tblReaders1.getModel();
+        model.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                if (e.getType() == TableModelEvent.UPDATE) {
+                    int row = e.getFirstRow();
+                    int column = e.getColumn();
+                    if (row >= 0 && column >= 0 && column <= 5) {
+                        checkAndFillDates(row, model);
+                    }
+                }
+            }
+        });
+
+        this.setLocationRelativeTo(null);
     }
 
     private void styleTable(JTable table) {
@@ -91,6 +113,7 @@ public class ManageReaders extends javax.swing.JFrame {
         }
     }
 
+    /*
     private void filterTableByYear() {
         String selectedYear = (String) cmbBirthDate.getSelectedItem();
 
@@ -109,7 +132,8 @@ public class ManageReaders extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }
-
+     */
+    //Find reader
     private void searchReaders() {
         String keyword = txtSearch.getText().trim();
         String yearFilter = cmbBirthDate.getSelectedItem().toString();
@@ -131,6 +155,7 @@ public class ManageReaders extends javax.swing.JFrame {
         }
     }
 
+    //cho btn clear
     private void clearFields() {
         txtName.setText("");
         txtIdentity.setText("");
@@ -143,6 +168,62 @@ public class ManageReaders extends javax.swing.JFrame {
         txtID.setText("");
     }
 
+    //Kiểm tra và tự động điền ngày tạo thẻ, ngày hét hạn
+    private void checkAndFillDates(int row, DefaultTableModel model) {
+        boolean allPreviousFilled = true;
+        for (int col = 0; col <= 5; col++) {
+            Object cellValue = model.getValueAt(row, col);
+            if (cellValue == null || cellValue.toString().trim().isEmpty()) {
+                allPreviousFilled = false;
+                break;
+            }
+        }
+
+        // Nếu tất cả các ô trước đó đã được điền
+        if (allPreviousFilled) {
+            LocalDate currentDate = LocalDate.now();
+            // Tính ngày hết hạn (48 tháng sau)
+            LocalDate expiryDate = currentDate.plusMonths(48);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            Object createdAtValue = model.getValueAt(row, 6);
+            Object expiredAtValue = model.getValueAt(row, 7);
+
+            // Chỉ cập nhật nếu ô ngày tháng còn trống
+            boolean needsUpdate = false;
+            if (createdAtValue == null || createdAtValue.toString().trim().isEmpty()) {
+                // Tạm thời gỡ listener 
+                TableModelListener[] listeners = model.getTableModelListeners();
+                for (TableModelListener l : listeners) {
+                    model.removeTableModelListener(l);
+                }
+
+                model.setValueAt(currentDate.format(formatter), row, 6); // Điền ngày tạo
+
+                // Gắn lại listener
+                for (TableModelListener l : listeners) {
+                    model.addTableModelListener(l);
+                }
+                needsUpdate = true;
+            }
+
+            // Nếu cột hết hạn trống or cột tạo vừa được cập nhật
+            if (expiredAtValue == null || expiredAtValue.toString().trim().isEmpty() || needsUpdate) {
+                TableModelListener[] listeners = model.getTableModelListeners();
+                for (TableModelListener l : listeners) {
+                    model.removeTableModelListener(l);
+                }
+
+                model.setValueAt(expiryDate.format(formatter), row, 7);
+
+                for (TableModelListener l : listeners) {
+                    model.addTableModelListener(l);
+                }
+            }
+        }
+    }
+
+    //Cho btn save
     private void saveReaders() {
         DefaultTableModel model = (DefaultTableModel) tblReaders1.getModel();
         int rowCount = tblReaders1.getRowCount();
@@ -174,7 +255,7 @@ public class ManageReaders extends javax.swing.JFrame {
             int addedCount = ReaderDAO.addReadersBatch(readerList);
 
             if (addedCount > 0) {
-                JOptionPane.showMessageDialog(this, addedCount + " added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, addedCount + " readers added!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 model.setRowCount(0);
                 model.addRow(new Object[]{"", "", "", "", "", "", "", ""});
             } else {
@@ -186,6 +267,7 @@ public class ManageReaders extends javax.swing.JFrame {
         }
     }
 
+    //
     private void enableRightClickCopy(JTable table) {
 
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -339,9 +421,11 @@ public class ManageReaders extends javax.swing.JFrame {
 
         btnAddReader.setBackground(new java.awt.Color(0, 51, 51));
         btnAddReader.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
+        btnAddReader.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/add_user_24x24.png"))); // NOI18N
         btnAddReader.setText("Add Readers");
         btnAddReader.setColorHover(new java.awt.Color(102, 153, 255));
-        btnAddReader.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnAddReader.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAddReader.setIconTextGap(10);
         btnAddReader.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnAddReaderMouseClicked(evt);
@@ -356,9 +440,11 @@ public class ManageReaders extends javax.swing.JFrame {
 
         searchPanel.setBackground(new java.awt.Color(0, 51, 51));
         searchPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
-        searchPanel.setText("Find Readers");
+        searchPanel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/search_3.png"))); // NOI18N
+        searchPanel.setText("Search Readers");
         searchPanel.setColorHover(new java.awt.Color(102, 153, 255));
-        searchPanel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        searchPanel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        searchPanel.setIconTextGap(10);
         searchPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 searchPanelMouseClicked(evt);
@@ -658,11 +744,11 @@ public class ManageReaders extends javax.swing.JFrame {
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/reader_Avatar2.png"))); // NOI18N
         jPanel7.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 180, 180));
 
-        jLabel24.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(102, 153, 255));
+        jLabel24.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(0, 51, 51));
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel24.setText("Reader infor");
-        jLabel24.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 3, 0, new java.awt.Color(102, 153, 255)));
+        jLabel24.setText("Reader details");
+        jLabel24.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 0, 3, 0, new java.awt.Color(0, 51, 51)));
         jPanel7.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 160, 40));
 
         jPanel1.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 180, 240));
@@ -882,6 +968,7 @@ public class ManageReaders extends javax.swing.JFrame {
         searchAreaPanel.setVisible(true);
         AddReadersPanel.setVisible(false);
     }//GEN-LAST:event_searchPanelActionPerformed
+    //
     private Date convertToDate(String dateStr) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -908,7 +995,7 @@ public class ManageReaders extends javax.swing.JFrame {
 
     private void btnAddRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRowActionPerformed
         DefaultTableModel model = (DefaultTableModel) tblReaders1.getModel();
-        model.addRow(new Object[]{"", "", "", "", "", "", "", ""}); // ✅ ĐÚNG
+        model.addRow(new Object[]{"", "", "", "", "", "", "", ""});
 
     }//GEN-LAST:event_btnAddRowActionPerformed
 

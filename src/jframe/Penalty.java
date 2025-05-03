@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.Calendar;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import static javax.swing.SwingConstants.CENTER;
 
 /**
@@ -41,6 +42,52 @@ public class Penalty extends javax.swing.JFrame {
         PenaltiesPanel.setVisible(false);
         Penalties();
         Overdue();
+        enableRightClickCopy(tblOverdue);
+
+        this.setLocationRelativeTo(null);
+
+    }
+
+    private void enableRightClickCopy(JTable table) {
+
+        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem copyMenuItem = new JMenuItem("Copy");
+
+        copyMenuItem.addActionListener(e -> {
+            int[] selectedRows = table.getSelectedRows();
+            int[] selectedColumns = table.getSelectedColumns();
+
+            if (selectedRows.length == 0 || selectedColumns.length == 0) {
+                return;
+            }
+
+            StringBuilder copiedText = new StringBuilder();
+
+            for (int row : selectedRows) {
+                for (int col : selectedColumns) {
+                    Object value = table.getValueAt(row, col);
+                    copiedText.append(value == null ? "" : value.toString()).append("\t");
+                }
+                copiedText.setLength(copiedText.length() - 1);
+                copiedText.append("\n");
+            }
+
+            if (copiedText.length() > 0) {
+                copiedText.setLength(copiedText.length() - 1);
+            }
+
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+                    new StringSelection(copiedText.toString()), null
+            );
+
+            JOptionPane.showMessageDialog(null, "Copied!");
+        });
+
+        popupMenu.add(copyMenuItem);
+
+        table.setComponentPopupMenu(popupMenu);
     }
 
     class ButtonRenderer extends JButton implements TableCellRenderer {
@@ -59,10 +106,10 @@ public class Penalty extends javax.swing.JFrame {
             setText((value == null) ? "View" : value.toString());
 
             if (isSelected) {
-                setBackground(Color.RED); // màu nền khi được chọn
+                setBackground(Color.RED);
                 setForeground(Color.WHITE);
             } else {
-                setBackground(new Color(255, 255, 255)); // màu nền mặc định
+                setBackground(new Color(255, 255, 255));
                 setForeground(Color.BLACK);
             }
 
@@ -70,6 +117,7 @@ public class Penalty extends javax.swing.JFrame {
         }
     }
 
+    //tbl Quá hạn
     private void Overdue() {
         if (tblOverdue == null) {
             overdueModel = new DefaultTableModel(
@@ -85,7 +133,6 @@ public class Penalty extends javax.swing.JFrame {
             tblOverdue.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 18));
             tblOverdue.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 18));
 
-            // Show grid lines
             tblOverdue.setShowGrid(true);
             tblOverdue.setGridColor(Color.BLACK);
 
@@ -260,8 +307,9 @@ public class Penalty extends javax.swing.JFrame {
         popup.show(tblOverdue, popupX, popupY);
     }
 
+    //tbl Danh sách phạt
     private void Penalties() {
-        // Khởi tạo bảng với các cột
+
         tableModel = new DefaultTableModel(
                 new Object[]{"Reader ID", "Reader name", "Borrow ID", "Borrow list", "Return date", "Penalty details", "Total (VND)"}, 0
         ) {
@@ -279,7 +327,7 @@ public class Penalty extends javax.swing.JFrame {
         tblPenalty.setOpaque(false);
         tblPenalty.setBackground(new Color(0, 0, 0, 0));
         tblPenalty.setForeground(Color.BLACK);
-        // Show grid
+
         tblPenalty.setShowGrid(true);
         tblPenalty.setGridColor(Color.BLACK);
 
@@ -310,7 +358,7 @@ public class Penalty extends javax.swing.JFrame {
         }
 
         // Renderer tùy chỉnh cho cột Borrow list và Penalty details (đặt sau để không bị ghi đè)
-        tblPenalty.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer()); 
+        tblPenalty.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer());
         tblPenalty.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
 
         // Nhấp chuột để hiển thị dropdown
@@ -325,7 +373,7 @@ public class Penalty extends javax.swing.JFrame {
             }
         });
 
-        // Thêm bảng vào PenaltiesPanel
+        // Đặt bảng vào PenaltiesPanel
         JScrollPane scrollPane = new JScrollPane(tblPenalty);
         MatteBorder matteBorder = new MatteBorder(3, 3, 3, 3, new Color(0, 51, 51));
         scrollPane.setBorder(matteBorder);
@@ -334,7 +382,7 @@ public class Penalty extends javax.swing.JFrame {
 
         PenaltiesPanel.add(scrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 1280, 510));
 
-        // Đảm bảo các JComboBox có giá trị mặc định
+        // Đảm bảo JComboBox có giá trị mặc định
         if (cmbYear.getItemCount() == 0) {
             cmbYear.addItem("All");
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -356,9 +404,12 @@ public class Penalty extends javax.swing.JFrame {
         }
 
         loadPenaltyData("", "All", "All", "All");
+        
+        //Thêm copy
+        enableRightClickCopy(tblPenalty);
     }
 
-// Renderer tùy chỉnh cho cột "Borrow list" và "Penalty details"
+// Tùy chỉnh cho cột "Borrow list" và "Penalty details"
     private void loadPenaltyData(String keyword, String year, String month, String filter) {
         tableModel.setRowCount(0);
 
@@ -572,7 +623,19 @@ public class Penalty extends javax.swing.JFrame {
         cmbYear.setToolTipText("");
         cmbYear.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 153, 255), 5, true));
         cmbYear.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
-        ((JScrollPane)((JPopupMenu)cmbYear.getUI().getAccessibleChild(cmbYear, 0)).getComponent(0)).setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        SwingUtilities.invokeLater(() -> {
+            try {
+                JPopupMenu popup = (JPopupMenu) cmbYear.getUI().getAccessibleChild(cmbYear, 0);
+                JScrollPane scrollPane = (JScrollPane) popup.getComponent(0);
+                JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+
+                verticalScrollBar.setPreferredSize(new Dimension(0, 0)); 
+                scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS); 
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
         cmbYear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbYearActionPerformed(evt);
@@ -595,7 +658,19 @@ public class Penalty extends javax.swing.JFrame {
         cmbCriteria.setToolTipText("");
         cmbCriteria.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 153, 255), 5, true));
         cmbCriteria.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
-        ((JScrollPane)((JPopupMenu)cmbCriteria.getUI().getAccessibleChild(cmbCriteria, 0)).getComponent(0)).setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        SwingUtilities.invokeLater(() -> {
+            try {
+                JPopupMenu popup = (JPopupMenu) cmbCriteria.getUI().getAccessibleChild(cmbCriteria, 0);
+                JScrollPane scrollPane = (JScrollPane) popup.getComponent(0);
+                JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+
+                verticalScrollBar.setPreferredSize(new Dimension(0, 0)); 
+                scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS); 
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
         cmbCriteria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbCriteriaActionPerformed(evt);
@@ -617,7 +692,19 @@ public class Penalty extends javax.swing.JFrame {
         cmbMonth.setToolTipText("");
         cmbMonth.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 153, 255), 5, true));
         cmbMonth.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
-        ((JScrollPane)((JPopupMenu)cmbMonth.getUI().getAccessibleChild(cmbMonth, 0)).getComponent(0)).setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        SwingUtilities.invokeLater(() -> {
+            try {
+                JPopupMenu popup = (JPopupMenu) cmbMonth.getUI().getAccessibleChild(cmbMonth, 0);
+                JScrollPane scrollPane = (JScrollPane) popup.getComponent(0);
+                JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+
+                verticalScrollBar.setPreferredSize(new Dimension(0, 0)); 
+                scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS); 
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
         cmbMonth.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbMonthActionPerformed(evt);
@@ -725,9 +812,11 @@ public class Penalty extends javax.swing.JFrame {
 
         searchPanel.setBackground(new java.awt.Color(0, 51, 51));
         searchPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 255, 255)));
+        searchPanel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/search_3.png"))); // NOI18N
         searchPanel.setText("View & Search");
         searchPanel.setColorHover(new java.awt.Color(102, 153, 255));
-        searchPanel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        searchPanel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        searchPanel.setIconTextGap(10);
         searchPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 searchPanelMouseClicked(evt);

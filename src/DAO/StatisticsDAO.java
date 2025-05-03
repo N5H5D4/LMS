@@ -18,6 +18,7 @@ import jframe.DBConnection;
  */
 public class StatisticsDAO {
 
+    //Tổng số đầu sách
     public static int getTotalTitles() {
         int totalBooks = 0;
         String sql = "SELECT COUNT(isbn) AS total FROM books";
@@ -34,6 +35,7 @@ public class StatisticsDAO {
         return totalBooks;
     }
 
+    //Tổng số lượng sách
     public static int getTotalBooks() {
         int totalBooks = 0;
         String sql = "SELECT SUM(quantity) AS total FROM books";
@@ -50,6 +52,7 @@ public class StatisticsDAO {
         return totalBooks;
     }
 
+    //Tổng độc giả
     public static int getTotalReaders() {
         int totalReaders = 0;
         String sql = "SELECT COUNT(*) AS total FROM readers";
@@ -66,7 +69,7 @@ public class StatisticsDAO {
         return totalReaders;
     }
 
-// Thống kê theo Number of Volumes (tổng số lượng sách)
+    //Tổng sách theo từng thể loại
     public static Map<String, Integer> getBooksByCategoryVolumes() {
         Map<String, Integer> booksByCategory = new HashMap<>();
         String sql = "SELECT category, SUM(quantity) AS total FROM books GROUP BY category";
@@ -82,7 +85,7 @@ public class StatisticsDAO {
         return booksByCategory;
     }
 
-    // Thống kê theo Number of Titles (số đầu sách)
+    // số đầu sách theo thể loại
     public static Map<String, Integer> getBooksByCategoryTitles() {
         Map<String, Integer> booksByCategory = new HashMap<>();
         String sql = "SELECT category, COUNT(isbn) AS total FROM books GROUP BY category";
@@ -98,6 +101,7 @@ public class StatisticsDAO {
         return booksByCategory;
     }
 
+    //Thống kê độc giả theo giới tính
     public static Map<String, Integer> getReadersByGender() {
         Map<String, Integer> readersByGender = new HashMap<>();
         String sql = "SELECT gender, COUNT(*) AS total FROM readers GROUP BY gender";
@@ -147,5 +151,115 @@ public class StatisticsDAO {
             e.printStackTrace();
         }
         return count;
+    }
+
+    //top 10 sách được mượn nhiều 
+    public static List<Map<String, Object>> getTopBorrowedBooks(int year, int month) {
+        List<Map<String, Object>> topBooks = new ArrayList<>();
+        String sql = "SELECT bd.isbn, b.title, COUNT(*) as borrow_count "
+                + "FROM borrow_details bd "
+                + "JOIN borrow_slips bs ON bd.borrow_id = bs.id "
+                + "JOIN books b ON bd.isbn = b.isbn "
+                + "WHERE YEAR(bs.borrow_date) = ? AND MONTH(bs.borrow_date) = ? "
+                + "GROUP BY bd.isbn, b.title "
+                + "ORDER BY borrow_count DESC "
+                + "LIMIT 10";
+        try (Connection conn = DBConnection.getConnection(); 
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, year);
+            ps.setInt(2, month);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> bookData = new HashMap<>();
+                bookData.put("isbn", rs.getString("isbn"));
+                bookData.put("title", rs.getString("title"));
+                bookData.put("borrow_count", rs.getInt("borrow_count"));
+                topBooks.add(bookData);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return topBooks;
+    }
+
+    // Top sách theo năm
+    public static List<Map<String, Object>> getTopBorrowedBooks(int year) {
+        List<Map<String, Object>> topBooks = new ArrayList<>();
+        String sql = "SELECT bd.isbn, b.title, COUNT(*) as borrow_count "
+                + "FROM borrow_details bd "
+                + "JOIN borrow_slips bs ON bd.borrow_id = bs.id "
+                + "JOIN books b ON bd.isbn = b.isbn "
+                + "WHERE YEAR(bs.borrow_date) = ? "
+                + "GROUP BY bd.isbn, b.title "
+                + "ORDER BY borrow_count DESC "
+                + "LIMIT 10";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, year);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> bookData = new HashMap<>();
+                bookData.put("isbn", rs.getString("isbn"));
+                bookData.put("title", rs.getString("title"));
+                bookData.put("borrow_count", rs.getInt("borrow_count"));
+                topBooks.add(bookData);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return topBooks;
+    }
+
+    // top thể loại theo tháng/năm
+    public static List<Map<String, Object>> getTopBorrowedCategories(int year, int month) {
+        List<Map<String, Object>> topCategories = new ArrayList<>();
+        String sql = "SELECT b.category, COUNT(*) as borrow_count "
+                + "FROM borrow_details bd "
+                + "JOIN borrow_slips bs ON bd.borrow_id = bs.id "
+                + "JOIN books b ON bd.isbn = b.isbn "
+                + "WHERE YEAR(bs.borrow_date) = ? AND MONTH(bs.borrow_date) = ? "
+                + "GROUP BY b.category "
+                + "ORDER BY borrow_count DESC "
+                + "LIMIT 5";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, year);
+            ps.setInt(2, month);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> categoryData = new HashMap<>();
+                categoryData.put("category", rs.getString("category"));
+                categoryData.put("borrow_count", rs.getInt("borrow_count"));
+                topCategories.add(categoryData);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return topCategories;
+    }
+
+    // Top 5 thể loại theo năm
+    public static List<Map<String, Object>> getTopBorrowedCategories(int year) {
+        List<Map<String, Object>> topCategories = new ArrayList<>();
+        String sql = "SELECT b.category, COUNT(*) as borrow_count "
+                + "FROM borrow_details bd "
+                + "JOIN borrow_slips bs ON bd.borrow_id = bs.id "
+                + "JOIN books b ON bd.isbn = b.isbn "
+                + "WHERE YEAR(bs.borrow_date) = ? "
+                + "GROUP BY b.category "
+                + "ORDER BY borrow_count DESC "
+                + "LIMIT 5";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, year);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> categoryData = new HashMap<>();
+                categoryData.put("category", rs.getString("category"));
+                categoryData.put("borrow_count", rs.getInt("borrow_count"));
+                topCategories.add(categoryData);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return topCategories;
     }
 }

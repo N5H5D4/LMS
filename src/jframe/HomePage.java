@@ -27,6 +27,8 @@ public class HomePage extends javax.swing.JFrame {
         updateTotalTitles();
         updateTotalReadersBorrowingBooks();
         updateTotalReadersOverdue();
+        
+        this.setLocationRelativeTo(null);
 
     }
 

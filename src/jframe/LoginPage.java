@@ -24,6 +24,8 @@ public class LoginPage extends javax.swing.JFrame {
      */
     public LoginPage() {
         initComponents();
+        this.setLocationRelativeTo(null);
+
     }
 
     public boolean validateLogin() {
@@ -87,10 +89,10 @@ public class LoginPage extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        txt_Pass = new app.bolivia.swing.JCTextField();
         btnSIGNIN = new rojerusan.RSButtonHover();
         btnSIGNUP = new rojerusan.RSButtonHover();
         jLabel1 = new javax.swing.JLabel();
+        txt_Pass = new rojerusan.RSPasswordTextPlaceHolder();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -152,19 +154,6 @@ public class LoginPage extends javax.swing.JFrame {
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/padlock.png"))); // NOI18N
         jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, -1, -1));
 
-        txt_Pass.setBackground(new java.awt.Color(255, 255, 255));
-        txt_Pass.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        txt_Pass.setForeground(new java.awt.Color(0, 0, 0));
-        txt_Pass.setToolTipText("");
-        txt_Pass.setFont(new java.awt.Font("Segoe UI", 3, 16)); // NOI18N
-        txt_Pass.setPlaceholder("ENTER PASSWORD");
-        txt_Pass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_PassActionPerformed(evt);
-            }
-        });
-        jPanel2.add(txt_Pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 350, 380, 40));
-
         RoundedButton btnSIGNIN = new RoundedButton("SIGNIN");
         ((RoundedButton) btnSIGNIN).setBackgroundColor(new java.awt.Color(102, 153, 255));
         ((RoundedButton) btnSIGNIN).setHoverColor(new java.awt.Color(255, 0, 51));
@@ -192,6 +181,15 @@ public class LoginPage extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/PICTURE_icon/li4.png"))); // NOI18N
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        txt_Pass.setBackground(new java.awt.Color(255, 255, 255));
+        txt_Pass.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        txt_Pass.setCaretColor(new java.awt.Color(0, 51, 51));
+        txt_Pass.setDisabledTextColor(new java.awt.Color(0, 51, 51));
+        txt_Pass.setFont(new java.awt.Font("Segoe UI", 3, 16)); // NOI18N
+        txt_Pass.setPhColor(new java.awt.Color(0, 51, 51));
+        txt_Pass.setPlaceholder("ENTER PASSWORD");
+        jPanel2.add(txt_Pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 360, 380, 40));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 750));
 
@@ -233,10 +231,6 @@ public class LoginPage extends javax.swing.JFrame {
     private void txt_UserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_UserNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_UserNameActionPerformed
-
-    private void txt_PassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_PassActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_PassActionPerformed
 
     private void btnSIGNINActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSIGNINActionPerformed
         if (validateLogin()) {
@@ -301,7 +295,7 @@ public class LoginPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private app.bolivia.swing.JCTextField txt_Pass;
+    private rojerusan.RSPasswordTextPlaceHolder txt_Pass;
     private app.bolivia.swing.JCTextField txt_UserName;
     // End of variables declaration//GEN-END:variables
 }

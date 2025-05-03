@@ -153,13 +153,17 @@
                 </MatteColorBorder>
               </Border>
             </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/PICTURE_icon/add_user_24x24.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Add Readers"/>
             <Property name="colorHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="99" red="66" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="18" style="1"/>
+              <Font name="Segoe UI" size="14" style="1"/>
             </Property>
+            <Property name="iconTextGap" type="int" value="10"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnAddReaderMouseClicked"/>
@@ -183,13 +187,17 @@
                 </MatteColorBorder>
               </Border>
             </Property>
-            <Property name="text" type="java.lang.String" value="Find Readers"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/PICTURE_icon/search_3.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Search Readers"/>
             <Property name="colorHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="99" red="66" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="18" style="1"/>
+              <Font name="Segoe UI" size="14" style="1"/>
             </Property>
+            <Property name="iconTextGap" type="int" value="10"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="searchPanelMouseClicked"/>
@@ -987,17 +995,17 @@
                 <Component class="javax.swing.JLabel" name="jLabel24">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="1"/>
+                      <Font name="Segoe UI" size="22" style="1"/>
                     </Property>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="99" red="66" type="rgb"/>
+                      <Color blue="33" green="33" red="0" type="rgb"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" value="Reader infor"/>
+                    <Property name="text" type="java.lang.String" value="Reader details"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
                         <MatteColorBorder bottom="3" left="0" right="0" top="3">
-                          <Color PropertyName="color" blue="ff" green="99" red="66" type="rgb"/>
+                          <Color PropertyName="color" blue="33" green="33" red="0" type="rgb"/>
                         </MatteColorBorder>
                       </Border>
                     </Property>
