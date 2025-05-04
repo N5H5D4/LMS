@@ -74,6 +74,7 @@ public class BookDAO {
         return books;
     }
 
+    //
     public List<Object[]> searchBooks(String keyword, String yearFilter, String categoryFilter, String searchType) {
         List<Object[]> bookList = new ArrayList<>();
         String query = "SELECT * FROM books WHERE 1=1";
@@ -145,6 +146,7 @@ public class BookDAO {
         return bookList;
     }
 
+    //
     public int saveBooks(List<Object[]> books) {
         int addedCount = 0;
         String insertQuery = "INSERT INTO books (isbn, title, author, publisher, published_year, category, price, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -180,6 +182,7 @@ public class BookDAO {
         return addedCount;
     }
 
+    //
     public boolean updateBook(Object[] bookData) {
         String query = "UPDATE books SET title = ?, author = ?, publisher = ?, published_year = ?, category = ?, price = ?, quantity = ? WHERE isbn = ?";
 
@@ -200,6 +203,7 @@ public class BookDAO {
         }
     }
 
+    //
     public boolean deleteBookByISBN(String isbn) {
         String query = "DELETE FROM books WHERE isbn = ?";
 

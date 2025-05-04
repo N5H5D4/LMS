@@ -909,7 +909,7 @@ public class BooksBorrowing extends javax.swing.JFrame {
             }
         }
 
-        // Xử lý ngày trả và phạt
+        //Ngày trả và tính phạt
         if (hasChanges || allReturnedOrLost) {
             try {
                 String returnDateStr = txtRETURN_DATE.getText().trim();

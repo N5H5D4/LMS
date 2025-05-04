@@ -19,6 +19,7 @@ import java.sql.*;
  */
 public class ReaderDAO {
 
+    //Lấy tên độc giả theo id
     public static String getReaderNameByID(int readerID) {
         String name = "";
         try (Connection conn = DBConnection.getConnection()) {
@@ -35,7 +36,7 @@ public class ReaderDAO {
         return name;
     }
 
-    // Tìm độc giả theo Reader ID
+    // Tìm độc giả theo ID
     public static List<String[]> searchReadersById(String readerId) {
         List<String[]> readers = new ArrayList<>();
         String query = "SELECT id, name FROM readers WHERE id = ?";
@@ -62,20 +63,20 @@ public class ReaderDAO {
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement slipStmt = conn.prepareStatement(insertSlipQuery, Statement.RETURN_GENERATED_KEYS); PreparedStatement detailStmt = conn.prepareStatement(insertDetailQuery)) {
 
-            // Thêm phiếu mượn vào bảng `borrow_slips`
+            // Thêm phiếu mượn vào bảng borrow_slips
             slipStmt.setInt(1, readerId);
             slipStmt.setDate(2, Date.valueOf(borrowDate));
             slipStmt.executeUpdate();
 
-            // Lấy `borrow_id` vừa tạo ra
+            // Lấy borrow_id vừa tạo
             ResultSet generatedKeys = slipStmt.getGeneratedKeys();
             if (generatedKeys.next()) {
                 int borrowId = generatedKeys.getInt(1);
 
-                // Thêm từng sách vào bảng `borrow_details`
+                // Thêm từng sách vào bảng borrow_details
                 for (String[] book : bookDetails) {
                     detailStmt.setInt(1, borrowId);
-                    detailStmt.setString(2, book[0]);  // ISBN
+                    detailStmt.setString(2, book[0]);
                     detailStmt.executeUpdate();
                 }
             }
@@ -84,6 +85,7 @@ public class ReaderDAO {
         }
     }
 
+    //
     public static int addReadersBatch(List<Object[]> readerList) throws SQLException {
         int addedCount = 0;
 
@@ -107,7 +109,7 @@ public class ReaderDAO {
                         addedCount++;
                     }
                 } catch (Exception ex) {
-                    System.err.println("❌ Error in line: " + ex.getMessage());
+                    System.err.println("Error in line: " + ex.getMessage());
                 }
             }
 
@@ -122,6 +124,7 @@ public class ReaderDAO {
         }
     }
 
+    //
     private static boolean isValid(Object[] row) {
         if (row.length < 8) {
             return false;
@@ -134,6 +137,7 @@ public class ReaderDAO {
         return true;
     }
 
+    //
     public static List<Object[]> searchReaders(String keyword, String yearFilter, String searchType, String genderFilter) throws SQLException {
         List<Object[]> resultList = new ArrayList<>();
 
@@ -214,6 +218,7 @@ public class ReaderDAO {
         return resultList;
     }
 
+    //
     public static boolean updateReader(int id, String name, String identityCard, Date birthDate, String gender,
             String email, String address, Date cardCreatedAt, Date cardExpiredAt) throws SQLException {
         String query = "UPDATE readers SET name = ?, identity_card = ?, birth_date = ?, gender = ?, email = ?, "
@@ -235,6 +240,7 @@ public class ReaderDAO {
         }
     }
 
+    //
     public static boolean deleteReader(String identityCard) throws SQLException {
         String query = "DELETE FROM readers WHERE identity_card = ?";
 

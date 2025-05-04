@@ -109,7 +109,7 @@ public class StatisticsDAO {
             while (rs.next()) {
                 String gender = rs.getString("gender");
                 int total = rs.getInt("total");
-                // Chuẩn hóa dữ liệu gender
+
                 String genderKey = (gender == null || gender.trim().isEmpty()) ? "Other" : gender;
                 readersByGender.put(genderKey, total);
             }

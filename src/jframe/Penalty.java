@@ -48,6 +48,7 @@ public class Penalty extends javax.swing.JFrame {
 
     }
 
+    //Thêm copy 
     private void enableRightClickCopy(JTable table) {
 
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -298,7 +299,7 @@ public class Penalty extends javax.swing.JFrame {
         popup.add(scrollPane);
         popup.pack();
 
-        //Vị trí xuất hiện popup
+        //Vị trí popup
         Rectangle cellRect = tblOverdue.getCellRect(row, col, true);
         int popupWidth = popup.getPreferredSize().width;
         int cellCenterX = cellRect.x + (cellRect.width / 2);
@@ -307,6 +308,9 @@ public class Penalty extends javax.swing.JFrame {
         popup.show(tblOverdue, popupX, popupY);
     }
 
+    
+    
+    
     //tbl Danh sách phạt
     private void Penalties() {
 

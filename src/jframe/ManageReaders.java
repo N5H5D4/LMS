@@ -200,7 +200,6 @@ public class ManageReaders extends javax.swing.JFrame {
 
                 model.setValueAt(currentDate.format(formatter), row, 6); // Điền ngày tạo
 
-                // Gắn lại listener
                 for (TableModelListener l : listeners) {
                     model.addTableModelListener(l);
                 }

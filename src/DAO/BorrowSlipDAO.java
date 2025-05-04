@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 
 public class BorrowSlipDAO {
 
+    //
     public static int saveBorrowSlip(int readerID, java.util.Date borrowDate) {
         int borrowId = -1;
         try (Connection conn = DBConnection.getConnection()) {
@@ -44,6 +45,7 @@ public class BorrowSlipDAO {
         return borrowId;
     }
 
+    //
     public static boolean saveBorrowDetail(int borrowId, String isbn) {
         boolean success = false;
         try (Connection conn = DBConnection.getConnection()) {
@@ -61,6 +63,7 @@ public class BorrowSlipDAO {
         return success;
     }
 
+    //
     public static List<String[]> searchBooksByTitle(String keyword) {
         List<String[]> books = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection()) {
@@ -80,24 +83,21 @@ public class BorrowSlipDAO {
         return books;
     }
 
-    // Thêm phiếu mượn (Đơn lẻ hoặc nhiều)
+    // Thêm phiếu mượn
     public static void insertBorrowSlip(int readerId, String borrowDate, List<String[]> bookDetails) {
         String insertSlipQuery = "INSERT INTO borrow_slips (reader_id, borrow_date) VALUES (?, ?)";
         String insertDetailQuery = "INSERT INTO borrow_details (borrow_id, isbn, status) VALUES (?, ?, 'Borrowed')";
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement slipStmt = conn.prepareStatement(insertSlipQuery, Statement.RETURN_GENERATED_KEYS); PreparedStatement detailStmt = conn.prepareStatement(insertDetailQuery)) {
 
-            // Thêm phiếu mượn vào bảng `borrow_slips`
             slipStmt.setInt(1, readerId);
             slipStmt.setDate(2, Date.valueOf(borrowDate));
             slipStmt.executeUpdate();
 
-            // Lấy `borrow_id` vừa tạo ra
             ResultSet generatedKeys = slipStmt.getGeneratedKeys();
             if (generatedKeys.next()) {
                 int borrowId = generatedKeys.getInt(1);
 
-                // Thêm từng sách vào bảng `borrow_details`
                 for (String[] book : bookDetails) {
                     detailStmt.setInt(1, borrowId);
                     detailStmt.setString(2, book[0]);  // ISBN
@@ -127,6 +127,7 @@ public class BorrowSlipDAO {
         return borrowId;
     }
 
+    //
     public boolean deleteBorrowRecord(int borrowId, String isbn) {
         boolean isDeleted = false;
         String deleteDetailQuery = "DELETE FROM borrow_details WHERE borrow_id = ? AND isbn = ?";
@@ -170,12 +171,12 @@ public class BorrowSlipDAO {
 
     }
 
+    //
     public boolean updateBorrowRecord(int borrowId, String oldIsbn, String newIsbn, int readerId, Date dueDate, Date returnDate, String status) {
         Connection con = DBConnection.getConnection();
         try {
             con.setAutoCommit(false);
 
-            // Update borrow_slips first
             String updateSlipQuery = "UPDATE borrow_slips SET reader_id = ?, due_date = ?, return_date = ? WHERE id = ?";
             try (PreparedStatement pst = con.prepareStatement(updateSlipQuery)) {
                 pst.setInt(1, readerId);
@@ -186,7 +187,7 @@ public class BorrowSlipDAO {
                 pst.executeUpdate();
             }
 
-            // If ISBN changes, delete old and insert new in borrow_details
+            // If ISBN đổi, xóa cũ và chèn mới vào borrow_details
             if (!oldIsbn.equals(newIsbn)) {
                 String deleteQuery = "DELETE FROM borrow_details WHERE borrow_id = ? AND isbn = ?";
                 try (PreparedStatement pst = con.prepareStatement(deleteQuery)) {
@@ -205,7 +206,7 @@ public class BorrowSlipDAO {
                     pst.executeUpdate();
                 }
             } else {
-                // If ISBN doesn't change, just update status
+                // If ISBN không đổi, chỉ đỏi status
                 String updateDetailsQuery = "UPDATE borrow_details SET status = ? WHERE borrow_id = ? AND isbn = ?";
                 try (PreparedStatement pst = con.prepareStatement(updateDetailsQuery)) {
                     pst.setString(1, status);
@@ -236,6 +237,7 @@ public class BorrowSlipDAO {
         }
     }
 
+    //
     public static List<Map<String, Object>> getUnreturnedBorrowSlips(int readerId) {
         List<Map<String, Object>> result = new ArrayList<>();
         String query = """
@@ -263,6 +265,7 @@ public class BorrowSlipDAO {
         return result;
     }
 
+    //
     public static List<Map<String, Object>> getBorrowDetailsBySlipId(int slipId) {
         List<Map<String, Object>> result = new ArrayList<>();
         String query = """
@@ -292,6 +295,7 @@ public class BorrowSlipDAO {
         return result;
     }
 
+    //
     public static String getBookStatus(int slipId, String isbn) {
         String sql = "SELECT status FROM borrow_details WHERE borrow_id = ? AND isbn = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -307,6 +311,7 @@ public class BorrowSlipDAO {
         return null;
     }
 
+    //
     public static void updateBookStatus(int slipId, String isbn, String status) {
         String sql = "UPDATE borrow_details SET status = ? WHERE borrow_id = ? AND isbn = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -319,6 +324,7 @@ public class BorrowSlipDAO {
         }
     }
 
+    //
     public static void updateReturnDate(int slipId, java.sql.Date returnDate) {
         String sql = "UPDATE borrow_slips SET return_date = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -330,6 +336,7 @@ public class BorrowSlipDAO {
         }
     }
 
+    //
     public static int getReaderIdBySlip(int slipId) {
         String sql = "SELECT reader_id FROM borrow_slips WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -344,7 +351,7 @@ public class BorrowSlipDAO {
         return -1;
     }
 
-    // Chèn bản ghi phạt vào bảng penalties
+    // Chèn bản phạt vào bảng penalties
     public static void insertPenalty(int readerId, int borrowId, BigDecimal amount, String reason) {
         String sql = "INSERT INTO penalties (reader_id, borrow_id, amount, reason) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -361,7 +368,7 @@ public class BorrowSlipDAO {
     // Xử lý phạt khi cập nhật trạng thái sách hoặc ngày trả
     public static void processPenalties(int borrowId, Date returnDate) {
         try (Connection conn = DBConnection.getConnection()) {
-            // Lấy thông tin phiếu mượn
+
             String slipSql = "SELECT reader_id, due_date FROM borrow_slips WHERE id = ?";
             PreparedStatement slipStmt = conn.prepareStatement(slipSql);
             slipStmt.setInt(1, borrowId);
@@ -408,13 +415,13 @@ public class BorrowSlipDAO {
 
     // Tính số ngày quá hạn
     private static long calculateOverdueDays(Date dueDate, Date returnDate) {
-        LocalDate due = dueDate.toLocalDate();       // java.sql.Date
+        LocalDate due = dueDate.toLocalDate(); 
         LocalDate returned = returnDate.toLocalDate();
         long days = ChronoUnit.DAYS.between(due, returned);
         return Math.max(days, 0); // Nếu trả sớm, không phạt
     }
 
-    // Lấy giá sách theo ISBN
+    // 
     public static BigDecimal getBookPriceByISBN(String isbn) {
         String sql = "SELECT price FROM books WHERE isbn = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -428,8 +435,8 @@ public class BorrowSlipDAO {
         }
         return BigDecimal.ZERO; // Mặc định nếu không tìm thấy
     }
-// Lấy thông tin phiếu mượn theo ID
-
+    
+    // Lấy thông tin phiếu mượn theo ID
     public static Map<String, Object> getBorrowSlipById(int slipId) {
         String sql = "SELECT reader_id, borrow_date, due_date, return_date FROM borrow_slips WHERE id = ?";
         Map<String, Object> slip = new HashMap<>();
@@ -456,19 +463,20 @@ public class BorrowSlipDAO {
                 if (returnDateSql != null) {
                     slip.put("return_date", new Date(returnDateSql.getTime()));
                 } else {
-                    slip.put("return_date", null); // Giữ null nếu không có ngày trả
+                    slip.put("return_date", null); 
                 }
             } else {
-                return null; // Trả về null nếu không tìm thấy phiếu mượn
+                return null;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return null; // Trả về null nếu có lỗi
+            return null; 
         }
 
         return slip;
     }
 
+    //
     public static List<Map<String, String>> getBooksForBorrowSlip(int borrowId, String keyword, String searchType) {
         List<Map<String, String>> books = new ArrayList<>();
         String query = "SELECT b.isbn, b.title, bd.status "
@@ -511,6 +519,7 @@ public class BorrowSlipDAO {
         return books;
     }
 
+    //
     public static List<Map<String, Object>> searchBorrowSlips(String keyword, String yearFilter, String monthFilter, String searchType) {
         List<Map<String, Object>> result = new ArrayList<>();
 
@@ -564,7 +573,7 @@ public class BorrowSlipDAO {
                 int borrowId = rs.getInt("borrow_id");
                 List<Map<String, String>> books = getBooksForBorrowSlip(borrowId, keyword, searchType);
 
-                // Nếu lọc theo ISBN/Title/All mà không có sách khớp thì bỏ qua
+                // Lọc theo ISBN/Title/All mà không có sách khớp thì bỏ qua
                 if (!keyword.isEmpty() && (searchType.equals("ISBN") || searchType.equals("Title") || searchType.equals("All")) && books.isEmpty()) {
                     continue;
                 }

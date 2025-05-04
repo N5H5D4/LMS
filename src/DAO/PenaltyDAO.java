@@ -18,12 +18,13 @@ import jframe.DBConnection;
  */
 public class PenaltyDAO {
 
+    //
     public static List<Map<String, Object>> getPenalties(String keyword, String year, String month, String filter) {
         List<Map<String, Object>> penalties = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
                 "SELECT p.reader_id, r.name AS reader_name, p.borrow_id, bs.return_date, p.amount, p.reason, "
                 + "(SELECT GROUP_CONCAT(DISTINCT CONCAT(bd.isbn, ' - ', b.title) SEPARATOR ', ') "
-                + // Thêm DISTINCT để loại bỏ lặp
+                + //
                 "FROM borrow_details bd JOIN books b ON bd.isbn = b.isbn WHERE bd.borrow_id = p.borrow_id) AS book_list "
                 + "FROM penalties p "
                 + "JOIN readers r ON p.reader_id = r.id "
@@ -91,6 +92,7 @@ public class PenaltyDAO {
         return penalties;
     }
 
+    //
     public static List<Map<String, Object>> getOverdueNotReturned() {
         List<Map<String, Object>> overdueList = new ArrayList<>();
         String sql = "SELECT bs.id AS borrow_id, bs.reader_id, r.name AS reader_name, bs.due_date, "
